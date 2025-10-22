@@ -49,3 +49,12 @@ if uploaded_file is not None:
         class_index = np.argmax(prediction)
         st.write("### Hasil Prediksi:", class_index)
         st.write("Probabilitas:", np.max(prediction))
+
+elif menu == "ℹ️ Tentang":
+    st.markdown("""
+    ### Tentang Aplikasi
+    Aplikasi ini menggabungkan dua model AI:
+    - **YOLOv8** untuk deteksi objek
+    - **CNN (TensorFlow)** untuk klasifikasi gambar  
+    Dibuat oleh: *Khaira Putri Syalaisa* 🎓
+    """)
