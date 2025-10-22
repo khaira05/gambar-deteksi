@@ -18,6 +18,28 @@ def load_models():
 yolo_model, classifier = load_models()
 
 # ==========================
+# Custom Tema 
+# ==========================
+st.markdown("""
+<style>
+    .stApp {
+        background-color: #f9fafb;
+        font-family: 'Segoe UI', sans-serif;
+    }
+    h1, h2, h3 {
+        color: #2C3E50;
+    }
+    .sidebar .sidebar-content {
+        background-color: #ecf0f1;
+    }
+    .css-1v3fvcr, .css-1d391kg {
+        border-radius: 15px;
+        padding: 10px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# ==========================
 # UI
 # ==========================
 st.title("🧠 Image Classification & Object Detection App")
