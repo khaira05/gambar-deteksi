@@ -23,7 +23,7 @@ yolo_model, classifier = load_models()
 st.markdown("""
 <style>
     .stApp {
-        background-color: #f9fafb;
+        background-color: #f5e6f1;
         font-family: 'Segoe UI', sans-serif;
     }
     h1, h2, h3 {
