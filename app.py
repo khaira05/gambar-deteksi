@@ -22,7 +22,8 @@ yolo_model, classifier = load_models()
 # ==========================
 st.title("🧠 Image Classification & Object Detection App")
 
-menu = st.sidebar.selectbox("Pilih Mode:", ["Deteksi Objek (YOLO)", "Klasifikasi Gambar"])
+menu = st.sidebar.selectbox("📂 Pilih Mode:", 
+                            ["🏠 Beranda", "Deteksi Objek (YOLO)", "Klasifikasi Gambar", "ℹ️ Tentang"])
 
 uploaded_file = st.file_uploader("Unggah Gambar", type=["jpg", "jpeg", "png"])
 
