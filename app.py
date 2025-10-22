@@ -98,6 +98,11 @@ elif menu in ["Deteksi Objek (YOLO)", "Klasifikasi Gambar"]:
         img = Image.open(uploaded_file)
         st.image(img, caption="Gambar yang Diupload", use_container_width=True)
 
+        # Progress bar placeholder
+        progress_text = "⏳ Sedang memproses gambar..."
+        progress_bar = st.progress(0)
+        st.text(progress_text)
+
         if menu == "Deteksi Objek (YOLO)":
             # Deteksi objek
             results = yolo_model(img)
