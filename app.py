@@ -22,19 +22,53 @@ yolo_model, classifier = load_models()
 # ==========================
 st.markdown("""
 <style>
+    /* 🌸 Tampilan utama aplikasi */
     .stApp {
-        background-color: #f5e6f1;
+        background-color: #f5e6f1;  /* Warna lembut untuk background utama */
         font-family: 'Segoe UI', sans-serif;
     }
+
+    /* 🎨 Warna dan gaya judul */
     h1, h2, h3 {
-        color: #2C3E50;
+        color: #4B4453;  
     }
-    .sidebar .sidebar-content {
-        background-color: #ecf0f1;
+
+    /* 🪞 Sidebar styling */
+    [data-testid="stSidebar"] {
+        background-color: #f5e6f1 !important;  /* Warna sidebar */
+        color: #4B4453;
+        border-right: 2px solid #e1cbe6; /* garis pembatas halus */
     }
+
+    [data-testid="stSidebar"] * {
+        color: #4B4453 !important;  /* Warna teks di sidebar */
+    }
+
+    /* ✨ Kotak sidebar */
     .css-1v3fvcr, .css-1d391kg {
         border-radius: 15px;
         padding: 10px;
+    }
+
+    /* 🪶 Hover effect di sidebar */
+    [data-testid="stSidebar"] .css-1v3fvcr:hover {
+        background-color: rgba(155, 89, 182, 0.15); /* ungu transparan */
+        border-radius: 10px;
+    }
+
+    /* 🎯 Tombol Streamlit (misal tombol upload atau action) */
+    div.stButton > button:first-child {
+        background-color: #ba68c8;
+        color: white;
+        border-radius: 10px;
+        border: none;
+        transition: 0.3s;
+    }
+
+    div.stButton > button:first-child:hover {
+        background-color: #ab47bc;
+        color: white;
+        transform: scale(1.03);
     }
 </style>
 """, unsafe_allow_html=True)
