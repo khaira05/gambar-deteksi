@@ -45,7 +45,7 @@ st.markdown("""
 st.title("🧠 Image Classification & Object Detection App")
 
 menu = st.sidebar.selectbox("📂 Pilih Mode:", 
-                            ["🏠 Beranda", "Deteksi Objek (YOLO)", "Klasifikasi Gambar", "ℹ️ Tentang"])
+                            ["🏠 Beranda", "Deteksi Objek (YOLO)", "Klasifikasi Gambar", "📘 Cara Menggunakan", "ℹ️ Tentang"])
 
 # ==========================
 # 1️⃣ Beranda
@@ -84,7 +84,22 @@ elif menu in ["Deteksi Objek (YOLO)", "Klasifikasi Gambar"]:
             st.write("Probabilitas:", np.max(prediction))
 
 # ==========================
-# 3️⃣ Tentang
+# 3️⃣ CARA MENGGUNAKAN (Bagian 4)
+# ==========================
+elif menu == "📘 Cara Menggunakan":
+    st.markdown("""
+    ## 📘 Panduan Penggunaan Aplikasi
+    1. Pilih mode yang kamu inginkan dari sidebar (Deteksi atau Klasifikasi).  
+    2. Unggah gambar yang ingin dianalisis (format .jpg, .jpeg, atau .png).  
+    3. Tunggu proses analisis selesai.  
+    4. Lihat hasil prediksi dan probabilitas di layar.  
+    5. Gunakan hasil deteksi atau klasifikasi sesuai kebutuhanmu.  
+
+    💡 **Tips:** Gunakan gambar yang jelas dan fokus agar hasil lebih akurat.
+    """)
+
+# ==========================
+# 4️⃣ TENTANG
 # ==========================
 elif menu == "ℹ️ Tentang":
     st.markdown("""
