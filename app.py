@@ -165,26 +165,36 @@ else:
         # 🟩 MODE KLASIFIKASI GAMBAR
         # ====================================================
         elif mode == "Klasifikasi Gambar":
-            img_resized = img.resize((224, 224))
-            img_array = image.img_to_array(img_resized)
-            img_array = np.expand_dims(img_array, axis=0)
-            img_array = img_array / 255.0
+    # pastikan gambar berformat RGB (menghindari grayscale / single-channel)
+    img_rgb = img.convert("RGB")
 
-            prediction = classifier.predict(img_array)
-            class_index = np.argmax(prediction)
-            prob = float(np.max(prediction))
+    # resize sesuai input model
+    img_resized = img_rgb.resize((224, 224))
 
-            st.markdown(f"""
-                <div class="result-card" style="border-left-color:{color};">
-                    <h3 style="color:{color}; margin-bottom:10px;">🧠 Hasil Prediksi</h3>
-                    <p style="color:#334155;">Model berhasil mengklasifikasikan gambar dengan hasil berikut:</p>
-                </div>
-            """, unsafe_allow_html=True)
+    # ubah menjadi array dan pastikan bentuk (1, H, W, 3)
+    img_array = image.img_to_array(img_resized)           # -> (H, W, 3)
+    img_array = np.expand_dims(img_array, axis=0)         # -> (1, H, W, 3)
+    img_array = img_array / 255.0                         # normalisasi
 
-            st.write(f"**Kelas Prediksi:** {class_index}")
-            st.write(f"**Probabilitas:** {prob:.2f}")
+    # (opsional) debugging: uncomment untuk lihat shape model & input
+    # st.write("Input shape model:", classifier.input_shape)
+    # st.write("Prepared image shape:", img_array.shape)
 
-        progress_bar.progress(100)
+    # PREDIKSI (tidak diubah)
+    prediction = classifier.predict(img_array)
+    class_index = np.argmax(prediction)
+    prob = float(np.max(prediction))
+
+    st.markdown(f"""
+        <div class="result-card" style="border-left-color:{color};">
+            <h3 style="color:{color}; margin-bottom:10px;">🧠 Hasil Prediksi</h3>
+            <p style="color:#334155;">Model berhasil mengklasifikasikan gambar dengan hasil berikut:</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.write(f"**Kelas Prediksi:** {class_index}")
+    st.write(f"**Probabilitas:** {prob:.2f}")
+
 
 # ====================================================
 # 7️⃣ TOMBOL KEMBALI KE BERANDA
