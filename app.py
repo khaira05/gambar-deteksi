@@ -6,127 +6,160 @@ import numpy as np
 from PIL import Image
 import cv2
 
-# ============================================================
-# 📸 Aplikasi Deteksi & Klasifikasi Gambar (Tampilan Modern)
-# ============================================================
-
 # ==========================
-# 1️⃣ Konfigurasi Halaman
+# Konfigurasi Halaman
 # ==========================
 st.set_page_config(page_title="Deteksi & Klasifikasi Gambar", layout="wide")
-st.markdown("""
-    <style>
-        .stApp {
-            background-color: #f8fafc;
-        }
-        h1, h2, h3, h4 {
-            color: #1f2937;
-        }
-        .stProgress > div > div > div > div {
-            background-color: #10b981;
-        }
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            margin-top: 20px;
-        }
-    </style>
-""", unsafe_allow_html=True)
 
 # ==========================
-# 2️⃣ Sidebar Navigasi
-# ==========================
-st.sidebar.title("🧭 Menu Navigasi")
-menu = st.sidebar.radio(
-    "Pilih Halaman",
-    ["🏠 Beranda", "🎯 Deteksi Objek (YOLO)", "🧠 Klasifikasi Gambar"]
-)
-
-# ==========================
-# 3️⃣ Load Model
+# Load Models
 # ==========================
 @st.cache_resource
 def load_models():
-    try:
-        yolo_model = YOLO("model/best.pt")
-        classifier = tf.keras.models.load_model("model/classifier_model.h5")
-        return yolo_model, classifier
-    except Exception as e:
-        st.error(f"Gagal memuat model: {e}")
-        return None, None
+    yolo_model = YOLO("model/best.pt")
+    classifier = tf.keras.models.load_model("model/classifier_model.h5")
+    return yolo_model, classifier
 
 yolo_model, classifier = load_models()
 
 # ==========================
-# 4️⃣ Halaman Utama
+# Custom CSS
 # ==========================
-if menu == "🏠 Beranda":
-    st.title("📸 Aplikasi Deteksi & Klasifikasi Gambar")
-    st.write("Unggah gambar dan biarkan AI menganalisisnya secara otomatis!")
-    st.markdown("""
-    #### Fitur yang Tersedia:
-    - **🎯 Deteksi Objek (YOLO):** Mengenali berbagai objek dalam gambar secara otomatis.  
-    - **🧠 Klasifikasi Gambar:** Mengidentifikasi kategori utama dari gambar yang diunggah.  
-    """)
-    st.image("assets/ai_banner.jpg", use_container_width=True)
+st.markdown("""
+<style>
+    body {
+        background-color: #f5e6f1;
+        color: #4B4453;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .main-title {
+        text-align: center;
+        color: #4B4453;
+        font-size: 48px;
+        margin-top: 100px;
+        font-weight: 600;
+    }
+
+    .sub-text {
+        text-align: center;
+        font-size: 18px;
+        color: #6a5d73;
+        margin-bottom: 40px;
+    }
+
+    .button-container {
+        text-align: center;
+    }
+
+    .pink-button {
+        background-color: #ec407a;
+        color: white;
+        padding: 15px 40px;
+        border: none;
+        border-radius: 30px;
+        font-size: 18px;
+        font-weight: 500;
+        margin: 15px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .pink-button:hover {
+        background-color: #d81b60;
+        transform: scale(1.05);
+    }
+
+    .back-button {
+        background-color: transparent;
+        color: #ec407a;
+        border: 2px solid #ec407a;
+        border-radius: 25px;
+        padding: 8px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+    .card {
+        background-color: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin-top: 30px;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # ==========================
-# 5️⃣ Halaman Deteksi & Klasifikasi
+# Navigasi Antar Halaman
 # ==========================
-elif menu in ["🎯 Deteksi Objek (YOLO)", "🧠 Klasifikasi Gambar"]:
-    st.title(menu)
-    uploaded_file = st.file_uploader("📤 Unggah Gambar", type=["jpg", "jpeg", "png"])
+if "page" not in st.session_state:
+    st.session_state.page = "home"
 
+def goto(page):
+    st.session_state.page = page
+
+# ==========================
+# 1️⃣ HALAMAN UTAMA
+# ==========================
+if st.session_state.page == "home":
+    st.markdown("<h1 class='main-title'>🧠 Image Detection & Classification</h1>", unsafe_allow_html=True)
+    st.markdown("<p class='sub-text'>Pilih salah satu mode di bawah untuk memulai</p>", unsafe_allow_html=True)
+
+    st.markdown("<div class='button-container'>", unsafe_allow_html=True)
+    st.button("Klasifikasi Gambar", key="to_class", on_click=lambda: goto("classify"))
+    st.button("Deteksi Objek (YOLO)", key="to_detect", on_click=lambda: goto("detect"))
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# ==========================
+# 2️⃣ HALAMAN KLASIFIKASI
+# ==========================
+elif st.session_state.page == "classify":
+    st.markdown("<h2 style='text-align:center;'>🧩 Klasifikasi Gambar</h2>", unsafe_allow_html=True)
+
+    uploaded_file = st.file_uploader("Unggah gambar untuk klasifikasi", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
         img = Image.open(uploaded_file)
-        col1, col2 = st.columns(2)
+        st.image(img, caption="Gambar yang Diupload", use_container_width=True)
 
-        with col1:
-            st.image(img, caption="🖼️ Gambar yang Diupload", use_container_width=True)
+        img_resized = img.resize((224, 224))
+        img_array = image.img_to_array(img_resized)
+        img_array = np.expand_dims(img_array, axis=0) / 255.0
 
-        with col2:
-            progress_bar = st.progress(0)
-            st.text("⏳ Sedang memproses gambar...")
+        with st.spinner("Sedang melakukan klasifikasi..."):
+            prediction = classifier.predict(img_array)
+            class_index = np.argmax(prediction)
+            prob = np.max(prediction)
 
-            # ==========================
-            # DETEKSI OBJEK (YOLO)
-            # ==========================
-            if menu == "🎯 Deteksi Objek (YOLO)":
-                if yolo_model:
-                    results = yolo_model(img)
-                    result_img = results[0].plot()
+        st.markdown("<div class='card'>", unsafe_allow_html=True)
+        st.write("### Hasil Prediksi:", class_index)
+        st.metric("Probabilitas", f"{prob:.2%}")
+        st.markdown("</div>", unsafe_allow_html=True)
 
-                    progress_bar.progress(100)
-                    st.success("✅ Deteksi selesai!")
+    st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
+    st.button("⬅️ Kembali", on_click=lambda: goto("home"), key="back_class")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-                    st.markdown('<div class="card">', unsafe_allow_html=True)
-                    st.image(result_img, caption="🔍 Hasil Deteksi", use_container_width=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
-                else:
-                    st.warning("⚠️ Model YOLO belum dimuat atau file model tidak ditemukan.")
+# ==========================
+# 3️⃣ HALAMAN DETEKSI
+# ==========================
+elif st.session_state.page == "detect":
+    st.markdown("<h2 style='text-align:center;'>🎯 Deteksi Objek (YOLO)</h2>", unsafe_allow_html=True)
 
-            # ==========================
-            # KLASIFIKASI GAMBAR
-            # ==========================
-            elif menu == "🧠 Klasifikasi Gambar":
-                if classifier:
-                    img_resized = img.resize((224, 224))
-                    img_array = image.img_to_array(img_resized)
-                    img_array = np.expand_dims(img_array, axis=0) / 255.0
+    uploaded_file = st.file_uploader("Unggah gambar untuk deteksi", type=["jpg", "jpeg", "png"])
+    if uploaded_file is not None:
+        img = Image.open(uploaded_file)
+        st.image(img, caption="Gambar yang Diupload", use_container_width=True)
 
-                    prediction = classifier.predict(img_array)
-                    class_index = np.argmax(prediction)
-                    prob = np.max(prediction)
+        with st.spinner("Sedang mendeteksi objek..."):
+            results = yolo_model(img)
+            result_img = results[0].plot()
 
-                    progress_bar.progress(100)
-                    st.success("✅ Klasifikasi selesai!")
+        st.markdown("<div class='card'>", unsafe_allow_html=True)
+        st.image(result_img, caption="Hasil Deteksi", use_container_width=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
-                    st.markdown('<div class="card">', unsafe_allow_html=True)
-                    st.write("### 🏷️ Hasil Prediksi:")
-                    st.write(f"**Kelas:** {class_index}")
-                    st.metric("Probabilitas", f"{prob:.2%}")
-                    st.markdown('</div>', unsafe_allow_html=True)
-                else:
-                    st.warning("⚠️ Model klasifikasi belum dimuat atau file model tidak ditemukan.")
+    st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
+    st.button("⬅️ Kembali", on_click=lambda: goto("home"), key="back_detect")
+    st.markdown("</div>", unsafe_allow_html=True)
