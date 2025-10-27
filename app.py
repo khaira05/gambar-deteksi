@@ -165,11 +165,24 @@ else:
         # 🟩 MODE KLASIFIKASI GAMBAR
         # ====================================================
         elif mode == "Klasifikasi Gambar":
-            # Pastikan gambar RGB
-            img_rgb = img.convert("RGB")
+            uploaded_image = st.file_uploader("Upload gambar untuk klasifikasi", type=["jpg", "jpeg", "png"])
 
-            # Resize sesuai model
-            img_resized = img_rgb.resize((224, 224))
+            if uploaded_image is not None:
+            img = Image.open(uploaded_image)
+
+            # Ambil ukuran input model otomatis
+            input_shape = classifier.input_shape
+            target_size = input_shape[1:3]
+            channels = input_shape[3] if len(input_shape) > 3 else 3
+
+            # Ubah format warna sesuai model
+            if channels == 1:
+                img = img.convert("L")
+            else:
+                img = img.convert("RGB")
+
+            # Resize otomatis ke ukuran input model
+            img_resized = img.resize(target_size)
 
             # Ubah ke array dan normalisasi
             img_array = image.img_to_array(img_resized)
@@ -178,8 +191,10 @@ else:
 
             # Prediksi
             prediction = classifier.predict(img_array)
-            class_index = np.argmax(prediction)
-            prob = float(np.max(prediction))
+            predicted_class = np.argmax(prediction, axis=1)[0]
+
+            st.image(img_resized, caption="Gambar yang diproses", use_container_width=True)
+            st.success(f"Hasil Prediksi: {predicted_class}")
 
             # Tampilkan hasil
             st.markdown(f"""
