@@ -168,7 +168,7 @@ else:
             uploaded_image = st.file_uploader("Upload gambar untuk klasifikasi", type=["jpg", "jpeg", "png"])
 
             if uploaded_image is not None:
-            img = Image.open(uploaded_image)
+                img = Image.open(uploaded_image)
 
             # Ambil ukuran input model otomatis
             input_shape = classifier.input_shape
