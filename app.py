@@ -21,6 +21,15 @@ def load_models():
 
 yolo_model, classifier = load_models()
 
+class_labels = [
+    "AMERICAN GOLDFINCH",
+    "BARN OWL",
+    "CARMEN BEE-EATER",
+    "DOWNY WOODPECKER",
+    "EMPEROR PENGUIN",
+    "FLAMINGO"
+]
+
 # ====================================================
 # 3️⃣ INISIALISASI SESSION STATE UNTUK NAVIGASI
 # ====================================================
