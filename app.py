@@ -204,8 +204,8 @@ else:
                 </div>
             """, unsafe_allow_html=True)
 
-            st.write(f"**Kelas Prediksi:** {class_index}")
-            st.write(f"**Probabilitas:** {prob:.2f}")
+            st.write(f"**Kelas Prediksi:** {predicted_class}")
+            st.write(f"**Probabilitas:** {np.max(prediction):.2f}")
 # ====================================================
 # 7️⃣ TOMBOL KEMBALI KE BERANDA
 # ====================================================
