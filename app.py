@@ -226,7 +226,8 @@ else:
 # ====================================================
 # 7️⃣ TOMBOL KEMBALI KE BERANDA
 # ====================================================
-            st.markdown('<div class="back-btn">', unsafe_allow_html=True)
-            if st.button("⬅️ Kembali ke Beranda"):
-                st.session_state.page = "home"
-            st.markdown('</div>', unsafe_allow_html=True)
+    # Tombol kembali SELALU muncul, meskipun upload error atau stuck
+    st.markdown('<div class="back-btn">', unsafe_allow_html=True)
+    if st.button("⬅️ Kembali ke Beranda"):
+        st.session_state.page = "home"
+    st.markdown('</div>', unsafe_allow_html=True)
