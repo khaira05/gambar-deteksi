@@ -179,42 +179,55 @@ else:
             if uploaded_image is not None:
                 img = Image.open(uploaded_image)
 
-            # Ambil ukuran input model otomatis
-            input_shape = classifier.input_shape
-            target_size = input_shape[1:3]
-            channels = input_shape[3] if len(input_shape) > 3 else 3
+                # Ambil ukuran input model otomatis
+                input_shape = classifier.input_shape
+                target_size = input_shape[1:3]
+                channels = input_shape[3] if len(input_shape) > 3 else 3
 
-            # Ubah format warna sesuai model
-            if channels == 1:
-                img = img.convert("L")
-            else:
-                img = img.convert("RGB")
+                # Ubah format warna sesuai model
+                if channels == 1:
+                    img = img.convert("L")
+                else:
+                    img = img.convert("RGB")
 
-            # Resize otomatis ke ukuran input model
-            img_resized = img.resize(target_size)
+                # Resize otomatis ke ukuran input model
+                img_resized = img.resize(target_size)
 
-            # Ubah ke array dan normalisasi
-            img_array = image.img_to_array(img_resized)
-            img_array = np.expand_dims(img_array, axis=0)
-            img_array = img_array / 255.0
+                # Ubah ke array dan normalisasi
+                img_array = image.img_to_array(img_resized)
+                img_array = np.expand_dims(img_array, axis=0)
+                img_array = img_array / 255.0
 
-            # Prediksi
-            prediction = classifier.predict(img_array)
-            predicted_class = np.argmax(prediction, axis=1)[0]
+                # Prediksi
+                prediction = classifier.predict(img_array)
+                predicted_class = np.argmax(prediction, axis=1)[0]
 
-            st.image(img_resized, caption="Gambar yang diproses", use_container_width=True)
-            st.success(f"Hasil Prediksi: {predicted_class}")
+                # 🐦 Daftar nama kelas
+                class_names = [
+                    "AMERICAN GOLDFINCH",
+                    "BARN OWL",
+                    "CARMINE BEE-EATER",
+                    "DOWNY WOODPECKER",
+                    "EMPEROR PENGUIN",
+                    "FLAMINGO"
+                ]
 
-            # Tampilkan hasil
-            st.markdown(f"""
-                <div class="result-card" style="border-left-color:{color};">
-                    <h3 style="color:{color}; margin-bottom:10px;">🧠 Hasil Prediksi</h3>
-                    <p style="color:#334155;">Model berhasil mengklasifikasikan gambar dengan hasil berikut:</p>
-                </div>
-            """, unsafe_allow_html=True)
+                # Ambil nama kelas
+                predicted_label = class_names[predicted_class]
 
-            st.write(f"**Kelas Prediksi:** {predicted_class}")
-            st.write(f"**Probabilitas:** {np.max(prediction):.2f}")
+                # Tampilkan hasil
+                st.image(img_resized, caption="Gambar yang diproses", use_container_width=True)
+                st.success(f"Hasil Prediksi: {predicted_label}")
+
+                st.markdown(f"""
+                    <div class="result-card" style="border-left-color:#10b981;">
+                        <h3 style="color:#10b981; margin-bottom:10px;">🧠 Hasil Prediksi</h3>
+                        <p style="color:#334155;">Model berhasil mengklasifikasikan gambar dengan hasil berikut:</p>
+                    </div>
+                """, unsafe_allow_html=True)
+
+                st.write(f"**Kelas Prediksi:** {predicted_label}")
+                st.write(f"**Probabilitas:** {np.max(prediction):.2f}")
 # ====================================================
 # 7️⃣ TOMBOL KEMBALI KE BERANDA
 # ====================================================
