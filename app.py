@@ -130,31 +130,12 @@ st.markdown(
 # LOAD MODELS (CACHED)
 # ==========================
 @st.cache_resource
-def load_models_cached():
-    yolo = None
-    clf = None
-    yolo_err = None
-    clf_err = None
-    # try load YOLO
-    try:
-        # adjust path if your .pt is elsewhere
-        if os.path.exists("model/best.pt"):
-            yolo = YOLO("model/best.pt")
-        else:
-            yolo_err = "model/best.pt not found"
-    except Exception as e:
-        yolo_err = str(e)
-    # try load classifier
-    try:
-        if os.path.exists("model/classifier_model.h5"):
-            clf = tf.keras.models.load_model("model/classifier_model.h5")
-        else:
-            clf_err = "model/classifier_model.h5 not found"
-    except Exception as e:
-        clf_err = str(e)
-    return yolo, clf, yolo_err, clf_err
+def load_models():
+    yolo_model = YOLO("model/best.pt")  # Model deteksi objek
+    classifier = tf.keras.models.load_model("model/classifier_model.h5")  # Model klasifikasi
+    return yolo_model, classifier
 
-yolo_model, classifier, yolo_err, clf_err = load_models_cached()
+yolo_model, classifier = load_models()
 
 # ==========================
 # NAVIGATION STATE
@@ -206,141 +187,126 @@ if st.session_state.page == "home":
     st.markdown("</div>", unsafe_allow_html=True)  # close main-container
     st.markdown("<div class='footer'>© 2025 AI Vision — Khaira Putri Syalaisa</div>", unsafe_allow_html=True)
 
-# ==========================
-# CLASSIFICATION PAGE
-# ==========================
-elif st.session_state.page == "classify":
-    # header with back button
-    st.markdown("<div style='display:flex; justify-content:space-between; align-items:center;'>", unsafe_allow_html=True)
-    if st.button("⬅️ Kembali ke Beranda", key="back_from_class"):
-        goto("home")
+else:
+    # ===============================
+    # Header Dinamis (Judul Halaman)
+    # ===============================
+    if st.session_state.page == "detect":
+        mode = "Deteksi Objek (YOLO)"
+        icon = "🧠"
+        desc = "Unggah gambar untuk mendeteksi objek menggunakan model YOLO."
+    else:
+        mode = "Klasifikasi Gambar"
+        icon = "📊"
+        desc = "Unggah gambar untuk memprediksi kelas menggunakan model klasifikasi."
+
+    st.markdown(f"""
+        <div style="
+            text-align:center;
+            padding: 30px 0 10px 0;
+            background: linear-gradient(135deg, #1E293B, #334155);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        ">
+            <h1 style="font-size:36px; margin-bottom:8px;">{icon} {mode}</h1>
+            <p style="font-size:16px; color:#CBD5E1;">{desc}</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # ===============================
+    # Upload Section
+    # ===============================
+    st.markdown("""
+        <div style="
+            background-color:#F8FAFC;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align:center;
+            margin-bottom: 20px;
+        ">
+            <h3 style="color:#1E293B;">📤 Unggah Gambar Anda</h3>
+            <p style="color:#64748B;">Pilih file dengan format .jpg, .jpeg, atau .png</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"])
+
+    if uploaded_file is not None:
+        img = Image.open(uploaded_file)
+        st.image(img, caption="📷 Gambar yang Diupload", use_container_width=True)
+
+        progress_text = "⏳ Sedang memproses gambar..."
+        progress_bar = st.progress(0)
+        st.text(progress_text)
+
+        # ===============================
+        # MODE: DETEKSI OBJEK (YOLO)
+        # ===============================
+        if mode == "Deteksi Objek (YOLO)":
+            results = yolo_model(img)
+            result_img = results[0].plot()
+
+            st.markdown("""
+                <div style="
+                    background-color:#FFFFFF;
+                    border-left: 5px solid #2563EB;
+                    border-radius: 12px;
+                    padding: 20px;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                    margin-top: 25px;
+                ">
+                    <h3 style="color:#1E3A8A;">🔍 Hasil Deteksi</h3>
+                </div>
+            """, unsafe_allow_html=True)
+
+            st.image(result_img, use_container_width=True)
+
+        # ===============================
+        # MODE: KLASIFIKASI GAMBAR
+        # ===============================
+        elif mode == "Klasifikasi Gambar":
+            img_resized = img.resize((224, 224))
+            img_array = image.img_to_array(img_resized)
+            img_array = np.expand_dims(img_array, axis=0)
+            img_array = img_array / 255.0
+
+            prediction = classifier.predict(img_array)
+            class_index = np.argmax(prediction)
+
+            st.markdown("""
+                <div style="
+                    background-color:#FFFFFF;
+                    border-left: 5px solid #16A34A;
+                    border-radius: 12px;
+                    padding: 20px;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                    margin-top: 25px;
+                ">
+                    <h3 style="color:#166534;">🧩 Hasil Prediksi</h3>
+                </div>
+            """, unsafe_allow_html=True)
+
+            st.write(f"**Kelas Prediksi:** {class_index}")
+            st.write(f"**Probabilitas:** {float(np.max(prediction)):.2f}")
+
+        progress_bar.progress(100)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # ===============================
+    # Tombol Kembali
+    # ===============================
+    st.markdown("""
+        <div style="text-align:center; margin-top:30px;">
+    """, unsafe_allow_html=True)
+
+    if st.button("⬅️ Kembali ke Beranda"):
+        st.session_state.page = "home"
+
     st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("<h2 style='text-align:center; margin-top:6px;'>Klasifikasi Gambar</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align:center; color:#6f5f6f;'>Unggah gambar lalu klik tombol <b>Analisis</b></p>", unsafe_allow_html=True)
-
-    # two-column layout: left upload, right result
-    left, right = st.columns([1,1.1])
-
-    with left:
-        st.markdown("<div class='upload-box'>", unsafe_allow_html=True)
-        uploaded = st.file_uploader("Pilih file gambar (jpg/png/jpeg)", type=["jpg","jpeg","png"], key="upload_class")
-        st.caption("Rekomendasi: ukuran gambar jelas & fokus pada objek")
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    with right:
-        st.markdown("<div class='result-box'>", unsafe_allow_html=True)
-        # Show placeholder before upload
-        st.markdown("<div style='text-align:center; color:#6f5f6f;'>Hasil akan tampil di sini setelah analisis</div>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    # when file uploaded, show preview + analyse button
-    if uploaded:
-        try:
-            img = Image.open(uploaded).convert("RGB")
-        except Exception:
-            st.error("Gagal membaca file gambar. Coba file lain.")
-            img = None
-
-        if img is not None:
-            st.image(img, caption="Preview", use_column_width=True)
-
-            # ANALYZE button
-            if st.button("Analisis", key="analyse_class"):
-                # handle classifier presence
-                if classifier is None:
-                    st.error("Model klasifikasi tidak tersedia. Detail: " + (clf_err or "unknown"))
-                else:
-                    with st.spinner("Melakukan klasifikasi..."):
-                        # preprocessing
-                        img_resized = img.resize((224,224))
-                        arr = image.img_to_array(img_resized)
-                        arr = np.expand_dims(arr, axis=0) / 255.0
-                        preds = classifier.predict(arr)
-                        idx = int(np.argmax(preds))
-                        prob = float(np.max(preds))
-
-                    # Map idx to label if you have mapping. Here we show index + prob.
-                    # If you have a list `labels = ['cat','dog',...]` replace below:
-                    labels = None
-                    if labels:
-                        label_text = labels[idx]
-                    else:
-                        label_text = f"Kelas {idx}"
-
-                    # display results in right column area
-                    st.markdown("<div class='result-box' style='margin-top:12px;'>", unsafe_allow_html=True)
-                    st.markdown(f"<h3 style='text-align:center'>{label_text}</h3>", unsafe_allow_html=True)
-                    st.markdown(f"<p style='text-align:center; color:#6f5f6f; margin-bottom:8px;'>Confidence: <b>{prob:.2%}</b></p>", unsafe_allow_html=True)
-                    st.markdown("</div>", unsafe_allow_html=True)
-
-# ==========================
-# DETECTION PAGE
-# ==========================
-elif st.session_state.page == "detect":
-    # header with back button
-    st.markdown("<div style='display:flex; justify-content:space-between; align-items:center;'>", unsafe_allow_html=True)
-    if st.button("⬅️ Kembali ke Beranda", key="back_from_detect"):
-        goto("home")
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("<h2 style='text-align:center; margin-top:6px;'>Deteksi Objek (YOLO)</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align:center; color:#6f5f6f;'>Unggah gambar lalu klik tombol <b>Deteksi</b></p>", unsafe_allow_html=True)
-
-    left, right = st.columns([1,1.1])
-
-    with left:
-        st.markdown("<div class='upload-box'>", unsafe_allow_html=True)
-        uploaded2 = st.file_uploader("Pilih file gambar (jpg/png/jpeg)", type=["jpg","jpeg","png"], key="upload_detect")
-        st.caption("Rekomendasi: objek terlihat jelas dalam foto")
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    with right:
-        st.markdown("<div class='result-box'>", unsafe_allow_html=True)
-        st.markdown("<div style='text-align:center; color:#6f5f6f;'>Hasil deteksi akan tampil di sini setelah proses</div>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    if uploaded2:
-        try:
-            img2 = Image.open(uploaded2).convert("RGB")
-        except Exception:
-            st.error("Gagal membaca file gambar. Coba file lain.")
-            img2 = None
-
-        if img2 is not None:
-            st.image(img2, caption="Preview", use_column_width=True)
-
-            if st.button("Deteksi", key="do_detect"):
-                if yolo_model is None:
-                    st.error("Model YOLO tidak tersedia. Detail: " + (yolo_err or "unknown"))
-                else:
-                    with st.spinner("Mendeteksi objek..."):
-                        # run yolo.ultralytics accepts PIL Image
-                        results = yolo_model(img2)
-                        # results[0].plot() returns numpy array (BGR in some versions) or PIL, cast safely
-                        rendered = results[0].plot()
-                        # if result is numpy array, convert to PIL for display
-                        if isinstance(rendered, np.ndarray):
-                            # if BGR -> convert to RGB (ultralytics sometimes returns RGB already)
-                            try:
-                                # detect channel order by checking max
-                                rendered_rgb = rendered[..., ::-1]
-                                disp_img = Image.fromarray(rendered_rgb)
-                            except Exception:
-                                disp_img = Image.fromarray(rendered)
-                        elif isinstance(rendered, Image.Image):
-                            disp_img = rendered
-                        else:
-                            # fallback: try to convert buffer
-                            try:
-                                disp_img = Image.fromarray(np.array(rendered))
-                            except Exception:
-                                disp_img = None
-
-                    if disp_img:
-                        st.image(disp_img, caption="Hasil Deteksi", use_column_width=True)
-                    else:
-                        st.error("Gagal menampilkan hasil deteksi (format output tidak dikenali).")
 
 # ==========================
 # SMALL FOOTER
