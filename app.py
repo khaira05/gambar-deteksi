@@ -207,14 +207,14 @@ else:
 
             # Tampilkan hasil
             st.markdown(f"""
-                <div class="result-card" style="border-left-color:{color};">
-                    <h3 style="color:{color}; margin-bottom:10px;">🧠 Hasil Prediksi</h3>
-                    <p style="color:#334155;">Model berhasil mengklasifikasikan gambar dengan hasil berikut:</p>
-                </div>
-            """, unsafe_allow_html=True)
+            <div class="result-card" style="border-left-color:{color};">
+                <h3 style="color:{color}; margin-bottom:10px;">🧠 Hasil Prediksi</h3>
+                <p style="color:#334155;">Model berhasil mengklasifikasikan gambar dengan hasil berikut:</p>
+            </div>
+        """, unsafe_allow_html=True)
 
-            st.write(f"**Kelas Prediksi:** {predicted_class}")
-            st.write(f"**Probabilitas:** {np.max(prediction):.2f}")
+st.write(f"**Kelas Prediksi:** {predicted_class}")
+st.write(f"**Probabilitas:** {np.max(prediction):.2f}")
 # ====================================================
 # 7️⃣ TOMBOL KEMBALI KE BERANDA
 # ====================================================
