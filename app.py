@@ -155,6 +155,11 @@ elif st.session_state.page in ["deteksi", "klasifikasi"]:
     if st.button("⬅️ Kembali"):
         goto("pilih")
 
+try:
+    yolo_model = YOLO("model/best.pt")
+except Exception as e:
+    st.error(f"Gagal memuat model YOLO: {e}")
+
 # =====================================================
 # =============== FOOTER ==============================
 # =====================================================
