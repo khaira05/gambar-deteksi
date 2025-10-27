@@ -164,17 +164,17 @@ else:
         # ====================================================
         # 🟩 MODE KLASIFIKASI GAMBAR
         # ====================================================
-                elif mode == "Klasifikasi Gambar":
-            # Pastikan gambar berformat RGB
+        elif mode == "Klasifikasi Gambar":
+            # Pastikan gambar RGB
             img_rgb = img.convert("RGB")
 
-            # Resize sesuai input model
+            # Resize sesuai model
             img_resized = img_rgb.resize((224, 224))
 
-            # Ubah menjadi array dan pastikan bentuk (1, H, W, 3)
-            img_array = image.img_to_array(img_resized)           # -> (H, W, 3)
-            img_array = np.expand_dims(img_array, axis=0)         # -> (1, H, W, 3)
-            img_array = img_array / 255.0                         # Normalisasi
+            # Ubah ke array dan normalisasi
+            img_array = image.img_to_array(img_resized)
+            img_array = np.expand_dims(img_array, axis=0)
+            img_array = img_array / 255.0
 
             # Prediksi
             prediction = classifier.predict(img_array)
@@ -191,8 +191,6 @@ else:
 
             st.write(f"**Kelas Prediksi:** {class_index}")
             st.write(f"**Probabilitas:** {prob:.2f}")
-
-
 # ====================================================
 # 7️⃣ TOMBOL KEMBALI KE BERANDA
 # ====================================================
