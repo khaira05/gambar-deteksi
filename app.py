@@ -221,7 +221,7 @@ elif st.session_state.page == "analysis":
 
     st.markdown(f"""
         <div style="
-            background-color: #fdf4ff;
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8, #f9a8d4);
             border-left: 6px solid #b45ef1;
             border-radius: 14px;
             padding: 20px;
