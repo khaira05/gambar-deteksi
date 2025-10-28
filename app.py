@@ -230,42 +230,7 @@ elif st.session_state.page == "upload":
     if st.button("⬅️ Kembali ke Pilih Mode", use_container_width=True):
         st.session_state.page = "analysis"
         
-# ====================================================
-# 🌸 TAMPILAN UPLOAD GAMBAR & HASIL ANALISIS (AI VISION STYLE)
-# ====================================================
 
-# Area upload gambar
-st.markdown(f"""
-    <div style="
-        background: linear-gradient(135deg, #fce7f3, #e9d5ff);
-        padding: 25px;
-        border-radius: 18px;
-        text-align: center;
-        margin-bottom: 25px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    ">
-        <h3 style="color:#1E293B; margin-bottom:8px;">📤 Unggah Gambar</h3>
-        <p style="color:#475569; font-size:15px; margin-bottom:0;">Unggah foto burung untuk dianalisis oleh sistem AI Vision.</p>
-    </div>
-""", unsafe_allow_html=True)
-
-uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"])
-
-if uploaded_file is not None:
-    img = Image.open(uploaded_file)
-    st.image(img, caption="📷 Gambar yang diunggah", use_container_width=True)
-
-    # Progress bar untuk efek loading
-    progress_text = "⏳ Sedang memproses gambar..."
-    progress_bar = st.progress(0)
-    st.text(progress_text)
-
-    # Simulasi progress bar biar smooth (opsional)
-    import time
-    for percent_complete in range(100):
-        time.sleep(0.01)
-        progress_bar.progress(percent_complete + 1)
-    st.success("✅ Gambar berhasil diproses!")
 
     # ====================================================
     # 🟦 MODE DETEKSI OBJEK (YOLO)
