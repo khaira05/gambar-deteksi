@@ -350,3 +350,13 @@ elif st.session_state.page == "upload":
     if st.button("⬅️ Kembali ke Beranda"):
         st.session_state.page = "home"
     st.markdown('</div>', unsafe_allow_html=True)
+
+# ====================================================
+# 📘 FOOTER - CREDIT
+# ====================================================
+st.markdown("""
+<hr style="margin-top:40px; margin-bottom:10px;">
+<p style="text-align:center; color:#666;">
+Developed by <b>Khaira Putri Syalaisa</b> · Powered by Streamlit & Deep Learning
+</p>
+""", unsafe_allow_html=True)
