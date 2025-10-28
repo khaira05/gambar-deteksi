@@ -13,7 +13,7 @@ import random
 # ====================================================
 # 1️⃣ KONFIGURASI HALAMAN
 # ====================================================
-st.set_page_config(page_title="AI Bird Vision App", page_icon="🦩", layout="centered")
+st.set_page_config(page_title="Bird Clasification and Deteciton App", page_icon="🦩", layout="centered")
 
 # ====================================================
 # 2️⃣ LOAD MODEL (TIDAK DIUBAH)
@@ -125,9 +125,9 @@ st.markdown("""
 # 4️⃣ HALAMAN BERANDA (HOME)
 # ====================================================
 if st.session_state.page == "home":
-    st.markdown('<h1 class="main-title">Selamat Datang di <span class="highlight">AI Vision</span></h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-title">Selamat Datang di <span class="highlight">Bird Clasification and Deteciton App</span></h1>', unsafe_allow_html=True)
     st.image("10 Best Flamingo Pics We Could Find.jpg", use_container_width=True)
-    st.markdown('<p class="subtitle">Platform AI canggih untuk mendeteksi objek dan mengklasifikasikan jenis burung dalam gambar menggunakan teknologi deep learning terdepan.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="subtitle">Platform canggih untuk mendeteksi objek dan mengklasifikasikan jenis burung dalam gambar menggunakan teknologi deep learning terdepan.</p>', unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns(3)
     with col1:
