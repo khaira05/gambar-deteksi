@@ -340,37 +340,6 @@ elif st.session_state.page == "upload":
                 </div>
             """, unsafe_allow_html=True)
 
-        # ====================================================
-        # 💬 FORM SARAN PENGGUNA (muncul setelah hasil klasifikasi)
-        # ====================================================
-        st.markdown("<hr>", unsafe_allow_html=True)
-        st.markdown(
-            """
-            <div style="
-                background-color:#f0fdf4;
-                border-left:6px solid #10B981;
-                border-radius:14px;
-                padding:20px;
-                box-shadow:0 4px 10px rgba(0,0,0,0.05);
-                margin-top:30px;
-            ">
-                <h4 style="color:#10B981; margin-bottom:8px;">💬 Punya saran tentang hasil klasifikasi ini?</h4>
-                <p style="color:#475569; font-size:15px;">Masukkan saran Anda agar sistem kami semakin baik!</p>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        with st.form("feedback_form_klasifikasi", clear_on_submit=True):
-            feedback = st.text_area("Tulis saran atau masukan Anda di sini...", placeholder="Misal: tampilkan deskripsi burung lebih lengkap")
-            submitted = st.form_submit_button("📩 Kirim Saran")
-            if submitted:
-                if feedback.strip() == "":
-                    st.warning("Silakan isi kolom saran terlebih dahulu.")
-                else:
-                    st.success("🎉 Terima kasih atas saran Anda!")
-                    with open("feedback_user.txt", "a", encoding="utf-8") as f:
-                        f.write(f"[KLASIFIKASI] {feedback}\n{'-'*40}\n")
         else:
             st.info("📸 Silakan unggah gambar terlebih dahulu untuk diklasifikasikan.")
 
@@ -382,27 +351,6 @@ elif st.session_state.page == "upload":
     if st.button("⬅️ Kembali ke Beranda"):
         st.session_state.page = "home"
     st.markdown('</div>', unsafe_allow_html=True)
-
-# ====================================================
-# 💬 FORM SARAN PENGGUNA
-# ====================================================
-st.markdown("---")
-st.markdown('<h3 style="text-align:center; color:#d63384;">💬 Beri Saran atau Masukan</h3>', unsafe_allow_html=True)
-st.markdown('<p style="text-align:center; color:#6B7280;">Kami sangat menghargai pendapat Anda untuk membuat aplikasi ini lebih baik!</p>', unsafe_allow_html=True)
-
-with st.form("feedback_form", clear_on_submit=True):
-    name = st.text_input("Nama (opsional)")
-    feedback = st.text_area("Saran atau masukan Anda di sini...")
-    submitted = st.form_submit_button("📩 Kirim Saran")
-
-    if submitted:
-        if feedback.strip() == "":
-            st.warning("Silakan isi kolom saran terlebih dahulu sebelum mengirim.")
-        else:
-            st.success("🎉 Terima kasih atas saran Anda!")
-            # --- kalau mau simpan ke file lokal (opsional) ---
-            with open("feedback_user.txt", "a", encoding="utf-8") as f:
-                f.write(f"Nama: {name if name else 'Anonim'}\nSaran: {feedback}\n{'-'*40}\n")
 
 # ====================================================
 # 📘 FOOTER - CREDIT
