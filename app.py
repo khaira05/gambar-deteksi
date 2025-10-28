@@ -259,7 +259,7 @@ elif st.session_state.page == "upload":
                 </div>
             """, unsafe_allow_html=True)
 
-            st.image(result_img, caption="🖼️ Hasil Deteksi", use_container_width=True)
+            st.image(result_img, caption="🖼️ Hasil Deteksi", use_column_width=True)
         else:
             st.info("📸 Silakan unggah gambar terlebih dahulu untuk dideteksi.")
 
@@ -268,12 +268,13 @@ elif st.session_state.page == "upload":
     # ====================================================
     elif st.session_state.mode == "klasifikasi":
         if uploaded_image is not None:
-            img = Image.open(uploaded_image)
-            img = img.convert("RGB")
+            # --- Preprocessing gambar ---
+            img = Image.open(uploaded_image).convert("RGB")
             img_resized = img.resize((224, 224))
             img_array = image.img_to_array(img_resized)
-            img_array = np.expand_dims(img_array, axis=0) / 255.0
+            img_array = np.expand_dims(img_array, axis=0).astype("float32") / 255.0
 
+            # --- Prediksi model ---
             with st.spinner("🔎 Sedang menganalisis gambar..."):
                 prediction = classifier.predict(img_array)
 
@@ -287,6 +288,9 @@ elif st.session_state.page == "upload":
                 "FLAMINGO"
             ]
             predicted_label = class_names[predicted_class]
+
+            # --- Tampilkan hasil ---
+            st.image(img_resized, caption="📸 Gambar yang Dianalisis", use_column_width=True)
 
             st.markdown(f"""
                 <div style="
@@ -307,10 +311,8 @@ elif st.session_state.page == "upload":
                     </p>
                 </div>
             """, unsafe_allow_html=True)
-
-            st.image(img_resized, caption="📊 Gambar yang dianalisis", use_container_width=True)
         else:
-            st.info("📸 Silakan unggah gambar terlebih dahulu untuk klasifikasi.")
+            st.info("📸 Silakan unggah gambar terlebih dahulu untuk diklasifikasikan.")
 
 # ====================================================
 # 7️⃣ TOMBOL KEMBALI KE BERANDA
