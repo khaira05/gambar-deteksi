@@ -18,6 +18,12 @@ st.set_page_config(page_title="AI Vision App", page_icon="🤖", layout="centere
 def load_models():
     yolo_model = YOLO("model/best.pt")  # Model deteksi objek
     classifier = tf.keras.models.load_model("model/classifier_model.h5")  # Model klasifikasi
+
+    # 🔍 Tambahkan debug info untuk tahu bentuk input model
+    print("✅ YOLO model loaded.")
+    print("✅ Classifier model loaded.")
+    print("➡️ Input shape classifier:", classifier.input_shape)
+
     return yolo_model, classifier
 
 yolo_model, classifier = load_models()
