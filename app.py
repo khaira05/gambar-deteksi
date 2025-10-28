@@ -234,7 +234,7 @@ elif st.session_state.page == "upload":
     # Tombol kembali ke pilih mode
     if st.button("⬅️ Kembali ke Pilih Mode", use_container_width=True):
         st.session_state.page = "analysis"
-        st.stop()  # hentikan eksekusi supaya tidak lanjut ke bawah
+        st.rerun()  
 
     # ====================================================
     # 🟦 MODE DETEKSI OBJEK (YOLO)
