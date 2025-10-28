@@ -125,8 +125,8 @@ st.markdown("""
 # 4️⃣ HALAMAN BERANDA (HOME)
 # ====================================================
 if st.session_state.page == "home":
-    st.image("10 Best Flamingo Pics We Could Find.jpg", use_column_width=True)
     st.markdown('<h1 class="main-title">Selamat Datang di <span class="highlight">AI Vision</span></h1>', unsafe_allow_html=True)
+    st.image("10 Best Flamingo Pics We Could Find.jpg", use_container_width=True)
     st.markdown('<p class="subtitle">Platform AI canggih untuk mendeteksi objek dan mengklasifikasikan jenis burung dalam gambar menggunakan teknologi deep learning terdepan.</p>', unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns(3)
@@ -319,7 +319,7 @@ elif st.session_state.page == "upload":
             predicted_label = class_names[predicted_class]
 
             # --- Tampilkan hasil ---
-            st.image(img_resized, caption="📸 Gambar yang Dianalisis", use_column_width=True)
+            st.image(img_resized, caption="📸 Gambar yang Dianalisis", use_container_width=True)
             st.markdown(f"""
                 <div style="
                     background:white;
