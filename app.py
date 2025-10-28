@@ -213,7 +213,12 @@ elif st.session_state.page == "analysis":
 # ====================================================
 # 6️⃣ HALAMAN INTI (UPLOAD GAMBAR)
 # ====================================================
+# ====================================================
+# 🟦 HALAMAN UPLOAD GAMBAR (untuk deteksi / klasifikasi)
+# ====================================================
 elif st.session_state.page == "upload":
+
+    # Judul halaman tergantung mode
     if st.session_state.mode == "deteksi":
         st.markdown('<h1 class="main-title">🔍 Deteksi Objek</h1>', unsafe_allow_html=True)
         st.markdown('<p class="subtitle">Unggah gambar untuk mendeteksi objek burung di dalamnya.</p>', unsafe_allow_html=True)
@@ -221,60 +226,53 @@ elif st.session_state.page == "upload":
         st.markdown('<h1 class="main-title">📷 Klasifikasi Gambar</h1>', unsafe_allow_html=True)
         st.markdown('<p class="subtitle">Unggah gambar burung untuk mengidentifikasi spesiesnya.</p>', unsafe_allow_html=True)
 
-    uploaded_file = st.file_uploader("Unggah gambar di sini", type=["jpg", "jpeg", "png"])
+    # Upload file
+    uploaded_image = st.file_uploader("📤 Unggah gambar di sini", type=["jpg", "jpeg", "png"])
 
-    if uploaded_file is not None:
-        st.image(uploaded_file, caption="Gambar yang diunggah", use_column_width=True)
-        st.info("🔧 Proses analisis AI sedang berjalan (placeholder)...")
-
+    # Tombol kembali ke pilih mode
     if st.button("⬅️ Kembali ke Pilih Mode", use_container_width=True):
         st.session_state.page = "analysis"
-        
-
+        st.stop()  # hentikan eksekusi supaya tidak lanjut ke bawah
 
     # ====================================================
     # 🟦 MODE DETEKSI OBJEK (YOLO)
     # ====================================================
-if mode == "Deteksi Objek (YOLO)":
-    uploaded_image = st.file_uploader("📤 Upload Gambar untuk Deteksi", type=["jpg", "jpeg", "png"])
-    
-    if uploaded_image is not None:
-        img = Image.open(uploaded_image)
-        results = yolo_model(img)
-        result_img = results[0].plot()
+    if st.session_state.mode == "deteksi":
+        if uploaded_image is not None:
+            img = Image.open(uploaded_image)
+            results = yolo_model(img)
+            result_img = results[0].plot()
 
-    st.markdown(f"""
-        <div style="
-            background:white;
-            border-left: 6px solid {color};
-            border-radius:14px;
-            padding:22px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            margin-top:25px;
-        ">
-            <h3 style="color:{color}; margin-bottom:10px;">🔍 Hasil Deteksi Objek</h3>
-            <p style="color:#334155; font-size:15px;">
-                Sistem AI Vision berhasil mendeteksi objek dalam gambar berikut menggunakan model YOLO.
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
+            st.markdown(f"""
+                <div style="
+                    background:white;
+                    border-left: 6px solid #d63384;
+                    border-radius:14px;
+                    padding:22px;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                    margin-top:25px;
+                ">
+                    <h3 style="color:#d63384; margin-bottom:10px;">🔍 Hasil Deteksi Objek</h3>
+                    <p style="color:#334155; font-size:15px;">
+                        Sistem AI Vision berhasil mendeteksi objek dalam gambar berikut menggunakan model YOLO.
+                    </p>
+                </div>
+            """, unsafe_allow_html=True)
 
-    st.image(result_img, caption="🖼️ Hasil Deteksi", use_container_width=True)
-else:
-    st.info("📸 Silakan unggah gambar terlebih dahulu untuk dideteksi.")
+            st.image(result_img, caption="🖼️ Hasil Deteksi", use_container_width=True)
+        else:
+            st.info("📸 Silakan unggah gambar terlebih dahulu untuk dideteksi.")
 
     # ====================================================
     # 🟩 MODE KLASIFIKASI GAMBAR
     # ====================================================
-    elif mode == "Klasifikasi Gambar":
-        uploaded_image = st.file_uploader("📤 Upload Gambar untuk Klasifikasi", type=["jpg", "jpeg", "png"])
-
+    elif st.session_state.mode == "klasifikasi":
         if uploaded_image is not None:
             img = Image.open(uploaded_image)
-
-            # --- Proses gambar & prediksi ---
-            target_size = (224, 224)
             img = img.convert("RGB")
+            img_resized = img.resize((224, 224))
+            img_array = image.img_to_array(img_resized)
+            img_array = np.expand_dims(img_array, axis=0) / 255.0
 
             with st.spinner("🔎 Sedang menganalisis gambar..."):
                 prediction = classifier.predict(img_array)
@@ -290,7 +288,6 @@ else:
             ]
             predicted_label = class_names[predicted_class]
 
-            # --- Tampilan hasil ---
             st.markdown(f"""
                 <div style="
                     background:white;
@@ -312,6 +309,8 @@ else:
             """, unsafe_allow_html=True)
 
             st.image(img_resized, caption="📊 Gambar yang dianalisis", use_container_width=True)
+        else:
+            st.info("📸 Silakan unggah gambar terlebih dahulu untuk klasifikasi.")
 
 # ====================================================
 # 7️⃣ TOMBOL KEMBALI KE BERANDA
