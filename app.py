@@ -9,7 +9,7 @@ import numpy as np
 from PIL import Image
 import streamlit as st
 
-st.set_page_config(page_title="AI Vision App", page_icon="🤖", layout="centered")
+st.set_page_config(page_title="AI Bird Vision App", page_icon="🤖", layout="centered")
 
 # ====================================================
 # 2️⃣ LOAD MODEL (TIDAK DIUBAH)
@@ -36,7 +36,7 @@ class_labels = [
 # ====================================================
 # 1️⃣ KONFIGURASI HALAMAN
 # ====================================================
-st.set_page_config(page_title="AI Vision", page_icon="🦩", layout="centered")
+st.set_page_config(page_title="AI Bird Vision", page_icon="🦩", layout="centered")
 
 # ====================================================
 # 2️⃣ INISIALISASI SESSION STATE UNTUK NAVIGASI
