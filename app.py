@@ -331,3 +331,4 @@ elif st.session_state.page == "upload":
     if st.button("⬅️ Kembali ke Beranda"):
         st.session_state.page = "home"
     st.markdown('</div>', unsafe_allow_html=True)
+    st.rerun()
