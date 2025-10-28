@@ -1,5 +1,5 @@
 # ====================================================
-# 1️⃣ IMPORT LIBRARY & KONFIGURASI HALAMAN
+# 1️ IMPORT LIBRARY 
 # ====================================================
 import streamlit as st
 from ultralytics import YOLO
@@ -11,12 +11,12 @@ import streamlit as st
 import random
 
 # ====================================================
-# 1️⃣ KONFIGURASI HALAMAN
+# 2️ KONFIGURASI HALAMAN
 # ====================================================
 st.set_page_config(page_title="Bird Clasification and Deteciton App", page_icon="🦩", layout="centered")
 
 # ====================================================
-# 2️⃣ LOAD MODEL (TIDAK DIUBAH)
+# 3️ LOAD MODEL (TIDAK DIUBAH)
 # ====================================================
 @st.cache_resource
 def load_models():
@@ -38,7 +38,7 @@ class_labels = [
 ]
 
 # ====================================================
-# 2️⃣ INISIALISASI SESSION STATE UNTUK NAVIGASI
+# 4 INISIALISASI SESSION STATE UNTUK NAVIGASI
 # ====================================================
 if "page" not in st.session_state:
     st.session_state.page = "home"
@@ -47,7 +47,7 @@ if "mode" not in st.session_state:
     st.session_state.mode = None  # deteksi atau klasifikasi
 
 # ====================================================
-# 3️⃣ CUSTOM CSS UNTUK TAMPILAN (GAYA AI VISION)
+# 5 CUSTOM CSS UNTUK TAMPILAN (GAYA AI VISION)
 # ====================================================
 st.markdown("""
     <style>
@@ -122,7 +122,7 @@ st.markdown("""
 
 
 # ====================================================
-# 4️⃣ HALAMAN BERANDA (HOME)
+# 6 HALAMAN BERANDA (HOME)
 # ====================================================
 if st.session_state.page == "home":
     st.markdown('<h1 class="main-title">Selamat Datang di <span class="highlight">Bird Clasification and Deteciton App</span></h1>', unsafe_allow_html=True)
@@ -174,7 +174,7 @@ if st.session_state.page == "home":
 
 
 # ====================================================
-# 5️⃣ HALAMAN PILIH MODE ANALISIS
+# 7 HALAMAN PILIH MODE ANALISIS
 # ====================================================
 elif st.session_state.page == "analysis":
     st.markdown('<h1 class="main-title">Pilih Jenis Analisis <span class="highlight">Bird Clasification and Deteciton App</span></h1>', unsafe_allow_html=True)
@@ -250,7 +250,7 @@ elif st.session_state.page == "analysis":
         st.session_state.page = "home"
 
 # ====================================================
-# 🟦 HALAMAN UPLOAD GAMBAR (untuk deteksi / klasifikasi)
+# 8 HALAMAN UPLOAD GAMBAR (untuk deteksi / klasifikasi)
 # ====================================================
 elif st.session_state.page == "upload":
 
@@ -271,7 +271,7 @@ elif st.session_state.page == "upload":
         st.rerun()  
 
     # ====================================================
-    # 🟦 MODE DETEKSI OBJEK (YOLO)
+    # 9 MODE DETEKSI OBJEK (YOLO)
     # ====================================================
     if st.session_state.mode == "deteksi":
         if uploaded_image is not None:
@@ -300,7 +300,7 @@ elif st.session_state.page == "upload":
             st.info("📸 Silakan unggah gambar terlebih dahulu untuk dideteksi.")
 
     # ====================================================
-    # 🟩 MODE KLASIFIKASI GAMBAR
+    # 10 MODE KLASIFIKASI GAMBAR
     # ====================================================
     elif st.session_state.mode == "klasifikasi":
         if uploaded_image is not None:
@@ -404,7 +404,7 @@ elif st.session_state.page == "upload":
             st.info("📸 Silakan unggah gambar terlebih dahulu untuk diklasifikasikan.")
 
 # ====================================================
-# 7️⃣ TOMBOL KEMBALI KE BERANDA
+# 11 TOMBOL KEMBALI KE BERANDA
 # ====================================================
     # Tombol kembali SELALU muncul, meskipun upload error atau stuck
     st.markdown('<div class="back-btn">', unsafe_allow_html=True)
