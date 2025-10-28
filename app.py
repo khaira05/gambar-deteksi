@@ -16,13 +16,13 @@ st.set_page_config(page_title="AI Vision App", page_icon="🤖", layout="centere
 # ====================================================
 @st.cache_resource
 def load_models():
-    # Load model deteksi objek (YOLO)
-    yolo_model = YOLO("model/best.pt")
-    
-    # Load model klasifikasi (Keras)
-    classifier = tf.keras.models.load_model("model/classifier_model.h5")
-    
+    yolo_model = YOLO("model/best.pt")  # Model deteksi objek
+    classifier = tf.keras.models.load_model("model/classifier_model.h5")  # Model klasifikasi
     return yolo_model, classifier
+
+# Panggil fungsi load_models()
+yolo_model, classifier = load_models()
+
 
 class_labels = [
     "AMERICAN GOLDFINCH",
