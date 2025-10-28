@@ -132,21 +132,27 @@ if st.session_state.page == "home":
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("""
-            <div class="menu-card">
+                <div class="menu-card" style="
+                background: linear-gradient(135deg, #fce7f3, #fbcfe8, #f9a8d4);
+            ">
                 <h4>🔍 Deteksi Objek</h4>
                 <p>Identifikasi dan lokalisasi objek dalam gambar dengan presisi tinggi.</p>
             </div>
         """, unsafe_allow_html=True)
     with col2:
         st.markdown("""
-            <div class="menu-card">
+                <div class="menu-card" style="
+                background: linear-gradient(135deg, #fce7f3, #fbcfe8, #f9a8d4);
+            ">
                 <h4>🖼️ Klasifikasi Gambar</h4>
                 <p>Mengklasifikasi jenis burung dengan detail spesies dan karakteristik.</p>
             </div>
         """, unsafe_allow_html=True)
     with col3:
         st.markdown("""
-            <div class="menu-card">
+                <div class="menu-card" style="
+                background: linear-gradient(135deg, #fce7f3, #fbcfe8, #f9a8d4);
+            ">
                 <h4>📈 Akurasi Tinggi</h4>
                 <p>Hasil analisis dengan tingkat akurasi dan confidence score tinggi.</p>
             </div>
