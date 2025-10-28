@@ -235,6 +235,7 @@ elif st.session_state.page == "upload":
     # ====================================================
     # 🟦 MODE DETEKSI OBJEK (YOLO)
     # ====================================================
+    mode = "Deteksi Objek (YOLO)" if st.session_state.page == "detect" else "Klasifikasi Gambar"
     if mode == "Deteksi Objek (YOLO)":
         results = yolo_model(img)
         result_img = results[0].plot()
