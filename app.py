@@ -204,119 +204,114 @@ elif st.session_state.page == "analysis":
     st.markdown("<div class='back-btn'><a href='#' class='btn-primary' onclick='window.location.reload()'>← Kembali</a></div>", unsafe_allow_html=True)
 
 # ====================================================
-# 6️⃣ HALAMAN DETEKSI & KLASIFIKASI GAMBAR
+# 🌸 TAMPILAN UPLOAD GAMBAR & HASIL ANALISIS (AI VISION STYLE)
 # ====================================================
-else:
-    # Tentukan mode
-    if st.session_state.page == "detect":
-        mode = "Deteksi Objek (YOLO)"
-        icon = "🎯"
-        color = "#2563EB"
-    else:
-        mode = "Klasifikasi Gambar"
-        icon = "🧩"
-        color = "#16A34A"
 
-    # Header tampilan
-    st.markdown(f"""
-        <div style="
-            text-align:center;
-            padding: 35px 20px 25px 20px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, {color}, #1E293B);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-            color: white;
-            margin-bottom: 30px;
-        ">
-            <h1 style="font-size:38px; margin-bottom:5px;">{icon} {mode}</h1>
-            <p style="font-size:16px; opacity:0.9;">Unggah gambar dan lihat hasil analisis AI</p>
-        </div>
-    """, unsafe_allow_html=True)
+# Area upload gambar
+st.markdown(f"""
+    <div style="
+        background: linear-gradient(135deg, #fce7f3, #e9d5ff);
+        padding: 25px;
+        border-radius: 18px;
+        text-align: center;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    ">
+        <h3 style="color:#1E293B; margin-bottom:8px;">📤 Unggah Gambar</h3>
+        <p style="color:#475569; font-size:15px; margin-bottom:0;">Unggah foto burung untuk dianalisis oleh sistem AI Vision.</p>
+    </div>
+""", unsafe_allow_html=True)
 
-    # Upload gambar
-    st.markdown('<div class="upload-card">', unsafe_allow_html=True)
-    st.markdown("### 📤 Unggah Gambar")
-    uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"])
-    st.markdown('</div>', unsafe_allow_html=True)
+uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"])
 
-    # Jika ada gambar diunggah
-    if uploaded_file is not None:
-        img = Image.open(uploaded_file)
-        st.image(img, caption="📷 Gambar yang diunggah", use_container_width=True)
+if uploaded_file is not None:
+    img = Image.open(uploaded_file)
+    st.image(img, caption="📷 Gambar yang diunggah", use_container_width=True)
 
-        # Progress bar
-        progress_text = "⏳ Sedang memproses gambar..."
-        progress_bar = st.progress(0)
-        st.text(progress_text)
+    # Progress bar untuk efek loading
+    progress_text = "⏳ Sedang memproses gambar..."
+    progress_bar = st.progress(0)
+    st.text(progress_text)
 
-        # ====================================================
-        # 🟦 MODE DETEKSI OBJEK (YOLO)
-        # ====================================================
-        if mode == "Deteksi Objek (YOLO)":
-            results = yolo_model(img)
-            result_img = results[0].plot()
+    # Simulasi progress bar biar smooth (opsional)
+    import time
+    for percent_complete in range(100):
+        time.sleep(0.01)
+        progress_bar.progress(percent_complete + 1)
+    st.success("✅ Gambar berhasil diproses!")
 
-            st.markdown(f"""
-                <div class="result-card" style="border-left-color:{color};">
-                    <h3 style="color:{color}; margin-bottom:10px;">🔍 Hasil Deteksi</h3>
-                    <p style="color:#334155;">Berikut hasil deteksi objek dari gambar yang diunggah.</p>
-                </div>
-            """, unsafe_allow_html=True)
+    # ====================================================
+    # 🟦 MODE DETEKSI OBJEK (YOLO)
+    # ====================================================
+    if mode == "Deteksi Objek (YOLO)":
+        results = yolo_model(img)
+        result_img = results[0].plot()
 
-            st.image(result_img, caption="Hasil Deteksi", use_container_width=True)
+        st.markdown(f"""
+            <div style="
+                background:white;
+                border-left: 6px solid {color};
+                border-radius:14px;
+                padding:22px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                margin-top:25px;
+            ">
+                <h3 style="color:{color}; margin-bottom:10px;">🔍 Hasil Deteksi Objek</h3>
+                <p style="color:#334155; font-size:15px;">
+                    Sistem AI Vision berhasil mendeteksi objek dalam gambar berikut menggunakan model YOLO.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
 
-# ====================================================
-# 🟩 MODE KLASIFIKASI GAMBAR
-# ====================================================
+        st.image(result_img, caption="🖼️ Hasil Deteksi", use_container_width=True)
+
+    # ====================================================
+    # 🟩 MODE KLASIFIKASI GAMBAR
+    # ====================================================
     elif mode == "Klasifikasi Gambar":
-        uploaded_image = st.file_uploader("Upload gambar untuk klasifikasi", type=["jpg", "jpeg", "png"])
+        # --- Proses gambar & prediksi ---
+        target_size = (224, 224)
+        img = img.convert("RGB")
+        img_resized = img.resize(target_size)
+        img_array = image.img_to_array(img_resized)
+        img_array = np.expand_dims(img_array, axis=0) / 255.0
 
-        if uploaded_image is not None:
-            img = Image.open(uploaded_image)
+        with st.spinner("🔎 Sedang menganalisis gambar..."):
+            prediction = classifier.predict(img_array)
 
-            # 🔹 Pakai ukuran tetap biar cepat (gak perlu baca input_shape tiap kali)
-            target_size = (224, 224)
+        predicted_class = np.argmax(prediction, axis=1)[0]
+        class_names = [
+            "AMERICAN GOLDFINCH",
+            "BARN OWL",
+            "CARMINE BEE-EATER",
+            "DOWNY WOODPECKER",
+            "EMPEROR PENGUIN",
+            "FLAMINGO"
+        ]
+        predicted_label = class_names[predicted_class]
 
-            # Ubah format warna ke RGB
-            img = img.convert("RGB")
+        # --- Tampilan hasil ---
+        st.markdown(f"""
+            <div style="
+                background:white;
+                border-left: 6px solid #10B981;
+                border-radius:14px;
+                padding:22px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                margin-top:25px;
+            ">
+                <h3 style="color:#10B981; margin-bottom:8px;">🧠 Hasil Klasifikasi Gambar</h3>
+                <p style="color:#334155; font-size:15px;">
+                    Model AI Vision mengenali gambar sebagai spesies:
+                    <b style="color:#10B981;">{predicted_label}</b>
+                </p>
+                <p style="color:#475569; margin-top:6px;">
+                    Confidence Score: <b>{np.max(prediction):.2f}</b>
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
 
-            # 🔹 Resize gambar agar sesuai model
-            img_resized = img.resize(target_size)
-
-            # 🔹 Ubah ke array dan normalisasi
-            img_array = image.img_to_array(img_resized)
-            img_array = np.expand_dims(img_array, axis=0)
-            img_array = img_array / 255.0
-
-            # 🔹 Prediksi (pakai spinner biar ada indikator loading)
-            with st.spinner("⏳ Sedang memproses gambar..."):
-                prediction = classifier.predict(img_array)
-
-            # Ambil kelas prediksi dan nama kelas
-            predicted_class = np.argmax(prediction, axis=1)[0]
-            class_names = [
-                "AMERICAN GOLDFINCH",
-                "BARN OWL",
-                "CARMINE BEE-EATER",
-                "DOWNY WOODPECKER",
-                "EMPEROR PENGUIN",
-                "FLAMINGO"
-            ]
-            predicted_label = class_names[predicted_class]
-
-            # 🔹 Tampilkan hasil
-            st.image(img_resized, caption="Gambar yang diproses", use_container_width=True)
-            st.success(f"Hasil Prediksi: {predicted_label}")
-
-            st.markdown(f"""
-                <div class="result-card" style="border-left-color:#10b981;">
-                    <h3 style="color:#10b981; margin-bottom:10px;">🧠 Hasil Prediksi</h3>
-                    <p style="color:#334155;">Model berhasil mengklasifikasikan gambar dengan hasil berikut:</p>
-                </div>
-            """, unsafe_allow_html=True)
-
-            st.write(f"**Kelas Prediksi:** {predicted_label}")
-            st.write(f"**Probabilitas:** {np.max(prediction):.2f}")
+        st.image(img_resized, caption="📊 Gambar yang dianalisis", use_container_width=True)
 
 # ====================================================
 # 7️⃣ TOMBOL KEMBALI KE BERANDA
