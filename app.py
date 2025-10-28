@@ -125,7 +125,7 @@ st.markdown("""
 # 4️⃣ HALAMAN BERANDA (HOME)
 # ====================================================
 if st.session_state.page == "home":
-    st.image("https://cdn.pixabay.com/photo/2018/09/19/19/42/flamingo-3690042_960_720.jpg", use_column_width=True)
+    st.image("10 Best Flamingo Pics We Could Find.jpg", use_column_width=True)
     st.markdown('<h1 class="main-title">Selamat Datang di <span class="highlight">AI Vision</span></h1>', unsafe_allow_html=True)
     st.markdown('<p class="subtitle">Platform AI canggih untuk mendeteksi objek dan mengklasifikasikan jenis burung dalam gambar menggunakan teknologi deep learning terdepan.</p>', unsafe_allow_html=True)
 
