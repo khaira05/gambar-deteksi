@@ -381,24 +381,24 @@ elif st.session_state.page == "upload":
             """, unsafe_allow_html=True)
 
             # --- Tambahkan karakteristik & habitat ---
-                if predicted_label in bird_info:
-                    info = bird_info[predicted_label]
-                    st.markdown(f"""
-                        <div style="
-                            background:#f0fdf4;
-                            border-left: 6px solid #16a34a;
-                            border-radius:14px;
-                            padding:20px;
-                            margin-top:20px;
-                            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-                        ">
-                            <h4 style="color:#15803d;">🌿 Karakteristik & Habitat</h4>
-                            <p style="color:#374151; margin-bottom:6px;"><b>Karakteristik:</b> {info['karakteristik']}</p>
-                            <p style="color:#374151;"><b>Habitat:</b> {info['habitat']}</p>
-                        </div>
-                    """, unsafe_allow_html=True)
-                else:
-                    st.warning("Informasi karakteristik dan habitat belum tersedia untuk spesies ini.")
+            if predicted_label in bird_info:
+                info = bird_info[predicted_label]
+                st.markdown(f"""
+                    <div style="
+                        background:#f0fdf4;
+                        border-left: 6px solid #16a34a;
+                        border-radius:14px;
+                        padding:20px;
+                        margin-top:20px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+                    ">
+                        <h4 style="color:#15803d;">🌿 Karakteristik & Habitat</h4>
+                        <p style="color:#374151; margin-bottom:6px;"><b>Karakteristik:</b> {info['karakteristik']}</p>
+                        <p style="color:#374151;"><b>Habitat:</b> {info['habitat']}</p>
+                    </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.warning("Informasi karakteristik dan habitat belum tersedia untuk spesies ini.")
 
         else:
             st.info("📸 Silakan unggah gambar terlebih dahulu untuk diklasifikasikan.")
