@@ -9,7 +9,10 @@ import numpy as np
 from PIL import Image
 import streamlit as st
 
-st.set_page_config(page_title="AI Bird Vision App", page_icon="🤖", layout="centered")
+# ====================================================
+# 1️⃣ KONFIGURASI HALAMAN
+# ====================================================
+st.set_page_config(page_title="AI Bird Vision App", page_icon="🦩", layout="centered")
 
 # ====================================================
 # 2️⃣ LOAD MODEL (TIDAK DIUBAH)
@@ -33,10 +36,7 @@ class_labels = [
     "FLAMINGO"
 ]
 
-# ====================================================
-# 1️⃣ KONFIGURASI HALAMAN
-# ====================================================
-st.set_page_config(page_title="AI Bird Vision", page_icon="🦩", layout="centered")
+
 
 # ====================================================
 # 2️⃣ INISIALISASI SESSION STATE UNTUK NAVIGASI
@@ -331,4 +331,3 @@ elif st.session_state.page == "upload":
     if st.button("⬅️ Kembali ke Beranda"):
         st.session_state.page = "home"
     st.markdown('</div>', unsafe_allow_html=True)
-    st.rerun()
