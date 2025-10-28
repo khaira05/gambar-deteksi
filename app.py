@@ -235,6 +235,9 @@ elif st.session_state.page == "upload":
     # ====================================================
     # 🟦 MODE DETEKSI OBJEK (YOLO)
     # ====================================================
+if mode == "Deteksi Objek (YOLO)":
+    uploaded_image = st.file_uploader("📤 Upload Gambar untuk Deteksi", type=["jpg", "jpeg", "png"])
+    
     if uploaded_image is not None:
         img = Image.open(uploaded_image)
         results = yolo_model(img)
