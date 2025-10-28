@@ -288,8 +288,8 @@ elif st.session_state.page == "upload":
                     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
                     margin-top:25px;
                 ">
-                    <h3 style="color:#d63384; margin-bottom:10px;">🔍 Hasil Deteksi Objek</h3>
-                    <p style="color:#334155; font-size:15px;">
+                    <h3 style="color:#831843; margin-bottom:10px;">🔍 Hasil Deteksi Objek</h3>
+                    <p style="color:#4B1F3B; font-size:15px;">
                         Sistem AI Vision berhasil mendeteksi objek dalam gambar berikut menggunakan model YOLO.
                     </p>
                 </div>
