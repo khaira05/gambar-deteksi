@@ -191,6 +191,7 @@ elif st.session_state.page == "analysis":
         if st.button("🧠 Pilih Deteksi Objek", use_container_width=True):
             st.session_state.mode = "deteksi"
             st.session_state.page = "upload"
+            st.rerun()
 
     with col2:
         st.markdown("""
