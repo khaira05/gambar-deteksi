@@ -235,28 +235,30 @@ elif st.session_state.page == "upload":
     # ====================================================
     # 🟦 MODE DETEKSI OBJEK (YOLO)
     # ====================================================
-    mode = "Deteksi Objek (YOLO)" if st.session_state.page == "detect" else "Klasifikasi Gambar"
-    if mode == "Deteksi Objek (YOLO)":
+    if uploaded_image is not None:
+        img = Image.open(uploaded_image)
         results = yolo_model(img)
         result_img = results[0].plot()
 
-        st.markdown(f"""
-            <div style="
-                background:white;
-                border-left: 6px solid {color};
-                border-radius:14px;
-                padding:22px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                margin-top:25px;
-            ">
-                <h3 style="color:{color}; margin-bottom:10px;">🔍 Hasil Deteksi Objek</h3>
-                <p style="color:#334155; font-size:15px;">
-                    Sistem AI Vision berhasil mendeteksi objek dalam gambar berikut menggunakan model YOLO.
-                </p>
-            </div>
-        """, unsafe_allow_html=True)
+    st.markdown(f"""
+        <div style="
+            background:white;
+            border-left: 6px solid {color};
+            border-radius:14px;
+            padding:22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top:25px;
+        ">
+            <h3 style="color:{color}; margin-bottom:10px;">🔍 Hasil Deteksi Objek</h3>
+            <p style="color:#334155; font-size:15px;">
+                Sistem AI Vision berhasil mendeteksi objek dalam gambar berikut menggunakan model YOLO.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
 
-        st.image(result_img, caption="🖼️ Hasil Deteksi", use_container_width=True)
+    st.image(result_img, caption="🖼️ Hasil Deteksi", use_container_width=True)
+else:
+    st.info("📸 Silakan unggah gambar terlebih dahulu untuk dideteksi.")
 
     # ====================================================
     # 🟩 MODE KLASIFIKASI GAMBAR
