@@ -8,6 +8,7 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 from PIL import Image
 import streamlit as st
+import random
 
 # ====================================================
 # 1️⃣ KONFIGURASI HALAMAN
@@ -214,10 +215,6 @@ elif st.session_state.page == "analysis":
     if st.button("⬅️ Kembali ke Beranda", use_container_width=True):
         st.session_state.page = "home"
 
-
-# ====================================================
-# 6️⃣ HALAMAN INTI (UPLOAD GAMBAR)
-# ====================================================
 # ====================================================
 # 🟦 HALAMAN UPLOAD GAMBAR (untuk deteksi / klasifikasi)
 # ====================================================
@@ -230,6 +227,32 @@ elif st.session_state.page == "upload":
     elif st.session_state.mode == "klasifikasi":
         st.markdown('<h1 class="main-title">📷 Klasifikasi Gambar</h1>', unsafe_allow_html=True)
         st.markdown('<p class="subtitle">Unggah gambar burung untuk mengidentifikasi spesiesnya.</p>', unsafe_allow_html=True)
+
+    # 🌍 FUN FACT BURUNG by Khaira
+        fun_facts = [
+            "🦜 Burung kakaktua dapat meniru suara manusia dan bahkan lagu pendek!",
+            "🕊️ Burung merpati mampu mengenali wajah manusia.",
+            "🦉 Burung hantu bisa memutar kepalanya hingga 270° tanpa cedera.",
+            "🦩 Warna merah muda flamingo berasal dari pigmen udang yang mereka makan!",
+            "🐧 Penguin jantan sering memberi batu pada betina sebagai tanda cinta.",
+            "🪶 Burung kolibri bisa mengepakkan sayap hingga 80 kali per detik!"
+        ]
+        random_fact = random.choice(fun_facts)
+
+        st.markdown(f"""
+        <div style="
+            background: #f0fdf4;
+            border-left: 6px solid #16a34a;
+            border-radius: 14px;
+            padding: 16px;
+            margin: 12px 0 24px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        ">
+            <h4 style="color:#16a34a; margin-bottom:6px;">🌍 Fun Fact Burung Hari Ini</h4>
+            <p style="color:#334155; font-size:15px;">{random_fact}</p>
+            <p style="color:#64748b; font-size:13px; margin-top:10px;">by <b>Khaira Putri Syalaisa 🌿</b></p>
+        </div>
+        """, unsafe_allow_html=True)
 
     # Upload file
     uploaded_image = st.file_uploader("📤 Unggah gambar di sini", type=["jpg", "jpeg", "png"])
