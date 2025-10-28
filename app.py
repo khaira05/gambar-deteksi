@@ -262,12 +262,15 @@ elif st.session_state.page == "upload":
     # 🟩 MODE KLASIFIKASI GAMBAR
     # ====================================================
     elif mode == "Klasifikasi Gambar":
+    # Pastikan ada gambar diunggah
+    uploaded_image = st.file_uploader("📤 Upload Gambar untuk Klasifikasi", type=["jpg", "jpeg", "png"])
+
+    if uploaded_image is not None:
+        img = Image.open(uploaded_image)
+
         # --- Proses gambar & prediksi ---
         target_size = (224, 224)
         img = img.convert("RGB")
-        img_resized = img.resize(target_size)
-        img_array = image.img_to_array(img_resized)
-        img_array = np.expand_dims(img_array, axis=0) / 255.0
 
         with st.spinner("🔎 Sedang menganalisis gambar..."):
             prediction = classifier.predict(img_array)
