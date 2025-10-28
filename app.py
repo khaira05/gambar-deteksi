@@ -339,6 +339,38 @@ elif st.session_state.page == "upload":
                     </p>
                 </div>
             """, unsafe_allow_html=True)
+
+        # ====================================================
+        # 💬 FORM SARAN PENGGUNA (muncul setelah hasil klasifikasi)
+        # ====================================================
+        st.markdown("<hr>", unsafe_allow_html=True)
+        st.markdown(
+            """
+            <div style="
+                background-color:#f0fdf4;
+                border-left:6px solid #10B981;
+                border-radius:14px;
+                padding:20px;
+                box-shadow:0 4px 10px rgba(0,0,0,0.05);
+                margin-top:30px;
+            ">
+                <h4 style="color:#10B981; margin-bottom:8px;">💬 Punya saran tentang hasil klasifikasi ini?</h4>
+                <p style="color:#475569; font-size:15px;">Masukkan saran Anda agar sistem kami semakin baik!</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        with st.form("feedback_form_klasifikasi", clear_on_submit=True):
+            feedback = st.text_area("Tulis saran atau masukan Anda di sini...", placeholder="Misal: tampilkan deskripsi burung lebih lengkap")
+            submitted = st.form_submit_button("📩 Kirim Saran")
+            if submitted:
+                if feedback.strip() == "":
+                    st.warning("Silakan isi kolom saran terlebih dahulu.")
+                else:
+                    st.success("🎉 Terima kasih atas saran Anda!")
+                    with open("feedback_user.txt", "a", encoding="utf-8") as f:
+                        f.write(f"[KLASIFIKASI] {feedback}\n{'-'*40}\n")
         else:
             st.info("📸 Silakan unggah gambar terlebih dahulu untuk diklasifikasikan.")
 
