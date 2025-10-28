@@ -330,6 +330,34 @@ elif st.session_state.page == "upload":
             ]
             predicted_label = class_names[predicted_class]
 
+            # === Informasi tiap spesies ===
+            bird_info = {
+                "AMERICAN GOLDFINCH": {
+                    "karakteristik": "Burung kecil berwarna kuning cerah dengan sayap hitam, aktif dan sering berpindah saat musim berganti.",
+                    "habitat": "Hidup di Amerika Utara, terutama di daerah ladang, kebun bunga, dan tepi hutan."
+                },
+                "BARN OWL": {
+                    "karakteristik": "Memiliki wajah berbentuk hati, bulu berwarna putih krem, dan pendengaran tajam untuk berburu di malam hari.",
+                    "habitat": "Ditemukan di seluruh dunia, sering tinggal di gudang, padang rumput, dan daerah pertanian."
+                },
+                "CARMINE BEE-EATER": {
+                    "karakteristik": "Memiliki bulu merah muda terang dengan sayap kebiruan, dikenal karena kebiasaannya menangkap serangga di udara.",
+                    "habitat": "Ditemukan di Afrika sub-Sahara, terutama di sepanjang sungai dan padang rumput terbuka."
+                },
+                "DOWNY WOODPECKER": {
+                    "karakteristik": "Burung pelatuk terkecil di Amerika Utara, berbulu hitam-putih dengan bercak merah di kepala jantan.",
+                    "habitat": "Ditemukan di hutan, taman, dan pekarangan dengan banyak pohon."
+                },
+                "EMPEROR PENGUIN": {
+                    "karakteristik": "Spesies penguin terbesar, dengan tubuh berwarna hitam-putih dan leher berwarna kuning pucat.",
+                    "habitat": "Hidup di pantai es dan perairan sekitar Antartika, beradaptasi dengan suhu sangat dingin."
+                },
+                "FLAMINGO": {
+                    "karakteristik": "Burung berleher panjang dengan bulu merah muda khas, sering berdiri dengan satu kaki.",
+                    "habitat": "Hidup di danau dangkal dan laguna garam di Afrika, Amerika, dan Asia Selatan."
+                }
+            }
+
             # --- Tampilkan hasil ---
             st.image(img_resized, caption="📸 Gambar yang Dianalisis", use_container_width=True)
             st.markdown(f"""
@@ -351,6 +379,26 @@ elif st.session_state.page == "upload":
                     </p>
                 </div>
             """, unsafe_allow_html=True)
+
+        # --- Tambahkan karakteristik & habitat ---
+            if predicted_label in bird_info:
+                info = bird_info[predicted_label]
+                st.markdown(f"""
+                    <div style="
+                        background:#f0fdf4;
+                        border-left: 6px solid #16a34a;
+                        border-radius:14px;
+                        padding:20px;
+                        margin-top:20px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+                    ">
+                        <h4 style="color:#15803d;">🌿 Karakteristik & Habitat</h4>
+                        <p style="color:#374151; margin-bottom:6px;"><b>Karakteristik:</b> {info['karakteristik']}</p>
+                        <p style="color:#374151;"><b>Habitat:</b> {info['habitat']}</p>
+                    </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.warning("Informasi karakteristik dan habitat belum tersedia untuk spesies ini.")
 
         else:
             st.info("📸 Silakan unggah gambar terlebih dahulu untuk diklasifikasikan.")
