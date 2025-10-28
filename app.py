@@ -183,7 +183,10 @@ elif st.session_state.page == "analysis":
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""
-            <div class="menu-card" style="border-top:5px solid #ff80ab;">
+                <div class="menu-card" style="
+                border-top:5px solid #ff80ab;
+                box-shadow: 0 6px 15px rgba(255, 105, 180, 0.3);
+            ">
                 <h4>🔎 Deteksi Objek</h4>
                 <p>Temukan dan lokalisasi objek dalam gambar dengan bounding box.</p>
                 <ul>
@@ -200,7 +203,10 @@ elif st.session_state.page == "analysis":
 
     with col2:
         st.markdown("""
-            <div class="menu-card" style="border-top:5px solid #b45ef1;">
+                <div class="menu-card" style="
+                border-top:5px solid #ff80ab;
+                box-shadow: 0 6px 15px rgba(255, 105, 180, 0.3);
+            ">
                 <h4>📷 Klasifikasi Gambar</h4>
                 <p>Identifikasi jenis dan spesies burung dengan detail lengkap.</p>
                 <ul>
