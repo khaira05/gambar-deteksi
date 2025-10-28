@@ -171,7 +171,7 @@ if st.session_state.page == "home":
 # 5️⃣ HALAMAN PILIH MODE ANALISIS
 # ====================================================
 elif st.session_state.page == "analysis":
-    st.markdown('<h1 class="main-title">Pilih Jenis Analisis <span class="highlight">AI Vision</span></h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-title">Pilih Jenis Analisis <span class="highlight">Bird Clasification and Deteciton App</span></h1>', unsafe_allow_html=True)
     st.markdown('<p class="subtitle">Pilih mode analisis yang ingin Anda gunakan untuk menganalisis gambar burung.</p>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
