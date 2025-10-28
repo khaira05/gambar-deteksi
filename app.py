@@ -261,7 +261,7 @@ elif st.session_state.page == "upload":
                 </div>
             """, unsafe_allow_html=True)
 
-            st.image(result_img, caption="🖼️ Hasil Deteksi", use_column_width=True)
+            st.image(result_img, caption="🖼️ Hasil Deteksi", use_container_width=True)
         else:
             st.info("📸 Silakan unggah gambar terlebih dahulu untuk dideteksi.")
 
@@ -272,7 +272,12 @@ elif st.session_state.page == "upload":
         if uploaded_image is not None:
             # --- Preprocessing gambar ---
             img = Image.open(uploaded_image).convert("RGB")
-            img_resized = img.resize((224, 224))
+
+            # 🔍 Ambil ukuran input dari model (misal (None, 128, 128, 3))
+            target_size = classifier.input_shape[1:3]
+
+            # Resize sesuai ukuran input model
+            img_resized = img.resize(target_size)
             img_array = image.img_to_array(img_resized)
             img_array = np.expand_dims(img_array, axis=0).astype("float32") / 255.0
 
@@ -293,7 +298,6 @@ elif st.session_state.page == "upload":
 
             # --- Tampilkan hasil ---
             st.image(img_resized, caption="📸 Gambar yang Dianalisis", use_column_width=True)
-
             st.markdown(f"""
                 <div style="
                     background:white;
