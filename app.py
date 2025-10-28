@@ -155,7 +155,8 @@ if st.session_state.page == "home":
 
     # Tombol ke halaman berikut
     if st.button("🚀 Lanjut ke Pilih Mode Analisis", use_container_width=True):
-        st.session_state.page = "analysis"
+        st.session_state.page = "analysis" 
+        st.rerun()
 
     # Metrics info
     st.markdown("""
