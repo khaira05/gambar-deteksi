@@ -261,7 +261,7 @@ elif st.session_state.page == "upload":
     # ====================================================
     # 🟩 MODE KLASIFIKASI GAMBAR
     # ====================================================
-    elif mode == "Klasifikasi Gambar":
+elif mode == "Klasifikasi Gambar":
     # Pastikan ada gambar diunggah
     uploaded_image = st.file_uploader("📤 Upload Gambar untuk Klasifikasi", type=["jpg", "jpeg", "png"])
 
