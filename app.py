@@ -7,6 +7,7 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import numpy as np
 from PIL import Image
+import streamlit as st
 
 st.set_page_config(page_title="AI Vision App", page_icon="🤖", layout="centered")
 
@@ -31,82 +32,176 @@ class_labels = [
 ]
 
 # ====================================================
-# 3️⃣ INISIALISASI SESSION STATE UNTUK NAVIGASI
+# 1️⃣ KONFIGURASI HALAMAN
+# ====================================================
+st.set_page_config(page_title="AI Vision", page_icon="🦩", layout="centered")
+
+# ====================================================
+# 2️⃣ INISIALISASI SESSION STATE UNTUK NAVIGASI
 # ====================================================
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
 # ====================================================
-# 4️⃣ CUSTOM CSS UNTUK TAMPILAN (ELEGAN & PROFESIONAL)
+# 3️⃣ CUSTOM CSS UNTUK TAMPILAN (GAYA AI VISION)
 # ====================================================
 st.markdown("""
     <style>
         body {
-            background-color: #F1F5F9;
+            background-color: #fff7fb;
+        }
+        .main {
+            padding: 0rem 2rem;
         }
         .main-title {
             text-align:center;
             font-size:42px;
             font-weight:700;
-            color:#1E293B;
-            margin-top:40px;
+            color:#212121;
+            margin-top:20px;
+        }
+        .highlight {
+            color:#d63384;
         }
         .subtitle {
             text-align:center;
             font-size:18px;
-            color:#64748B;
+            color:#6B7280;
             margin-bottom:40px;
         }
         .menu-card {
             background-color:white;
             border-radius:20px;
-            padding:30px;
+            padding:25px;
             text-align:center;
-            box-shadow:0 6px 18px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
+            box-shadow:0 6px 15px rgba(0,0,0,0.08);
+            transition:transform 0.2s;
         }
         .menu-card:hover {
             transform: scale(1.03);
         }
-        .upload-card {
-            background-color:#F8FAFC;
-            border-radius:15px;
-            padding:25px;
-            text-align:center;
-            box-shadow:0 4px 15px rgba(0,0,0,0.08);
-            margin-bottom:25px;
+        .menu-card h4 {
+            color:#d63384;
         }
-        .result-card {
-            background-color:white;
-            border-left:6px solid #2563EB;
-            border-radius:12px;
-            padding:20px 25px;
-            box-shadow:0 4px 10px rgba(0,0,0,0.1);
-            margin-top:25px;
+        .btn-primary {
+            display:inline-block;
+            background: linear-gradient(90deg, #ff80ab, #d63384);
+            color:white;
+            padding:12px 32px;
+            border-radius:30px;
+            text-decoration:none;
+            font-weight:600;
+            text-align:center;
+            margin-top:30px;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #d63384, #ff80ab);
+            text-decoration:none;
+        }
+        .metrics {
+            text-align:center;
+            font-size:1rem;
+            color:#4b4b4b;
+            margin-top:1.5rem;
         }
         .back-btn {
             text-align:center;
             margin-top:40px;
         }
+        ul {
+            text-align:left;
+            color:#555;
+            padding-left:1.2rem;
+        }
     </style>
 """, unsafe_allow_html=True)
 
+
 # ====================================================
-# 5️⃣ HALAMAN BERANDA (PILIH MODE)
+# 4️⃣ HALAMAN BERANDA (HOME)
 # ====================================================
 if st.session_state.page == "home":
-    st.markdown('<h1 class="main-title">🤖 AI Vision App</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="subtitle">Deteksi dan Klasifikasi Gambar dengan Kecerdasan Buatan</p>', unsafe_allow_html=True)
+    st.image("https://cdn.pixabay.com/photo/2018/09/19/19/42/flamingo-3690042_960_720.jpg", use_column_width=True)
+    st.markdown('<h1 class="main-title">Selamat Datang di <span class="highlight">AI Vision</span></h1>', unsafe_allow_html=True)
+    st.markdown('<p class="subtitle">Platform AI canggih untuk mendeteksi objek dan mengklasifikasikan jenis burung dalam gambar menggunakan teknologi deep learning terdepan.</p>', unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("""
+            <div class="menu-card">
+                <h4>🔍 Deteksi Objek</h4>
+                <p>Identifikasi dan lokalisasi objek dalam gambar dengan presisi tinggi.</p>
+            </div>
+        """, unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+            <div class="menu-card">
+                <h4>🖼️ Klasifikasi Gambar</h4>
+                <p>Mengklasifikasi jenis burung dengan detail spesies dan karakteristik.</p>
+            </div>
+        """, unsafe_allow_html=True)
+    with col3:
+        st.markdown("""
+            <div class="menu-card">
+                <h4>📈 Akurasi Tinggi</h4>
+                <p>Hasil analisis dengan tingkat akurasi dan confidence score tinggi.</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # Tombol ke halaman berikut
+    if st.button("🚀 Mulai Sekarang", use_container_width=True):
+        st.session_state.page = "analysis"
+
+    # Metrics info
+    st.markdown("""
+    <div class="metrics">
+        <b>95%</b> Akurasi &nbsp;&nbsp; | &nbsp;&nbsp;
+        <b>200+</b> Spesies Burung &nbsp;&nbsp; | &nbsp;&nbsp;
+        <b><2s</b> Waktu Proses
+    </div>
+    """, unsafe_allow_html=True)
+
+
+# ====================================================
+# 5️⃣ HALAMAN PILIH ANALISIS
+# ====================================================
+elif st.session_state.page == "analysis":
+    st.markdown('<h1 class="main-title">Pilih Jenis Analisis <span class="highlight">AI Vision</span></h1>', unsafe_allow_html=True)
+    st.markdown('<p class="subtitle">Pilih mode analisis yang ingin Anda gunakan untuk menganalisis gambar burung.</p>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
-
     with col1:
-        if st.button("🎯 Deteksi Objek (YOLO)", use_container_width=True):
-            st.session_state.page = "detect"
+        st.markdown("""
+            <div class="menu-card" style="border-top:5px solid #ff80ab;">
+                <h4>🔎 Deteksi Objek</h4>
+                <p>Temukan dan lokalisasi objek dalam gambar dengan bounding box.</p>
+                <ul>
+                    <li>Identifikasi posisi objek</li>
+                    <li>Koordinat lokasi</li>
+                    <li>Confidence score</li>
+                </ul>
+            </div>
+        """, unsafe_allow_html=True)
+        if st.button("🧠 Jalankan Deteksi Objek", use_container_width=True):
+            st.success("Mode deteksi diaktifkan (placeholder).")
 
     with col2:
-        if st.button("🧩 Klasifikasi Gambar", use_container_width=True):
-            st.session_state.page = "classify"
+        st.markdown("""
+            <div class="menu-card" style="border-top:5px solid #b45ef1;">
+                <h4>📷 Klasifikasi Gambar</h4>
+                <p>Identifikasi jenis dan spesies burung dengan detail lengkap.</p>
+                <ul>
+                    <li>Nama spesies</li>
+                    <li>Karakteristik detail</li>
+                    <li>Informasi habitat</li>
+                </ul>
+            </div>
+        """, unsafe_allow_html=True)
+        if st.button("🦩 Jalankan Klasifikasi", use_container_width=True):
+            st.success("Mode klasifikasi diaktifkan (placeholder).")
+
+    # Tombol kembali
+    st.markdown("<div class='back-btn'><a href='#' class='btn-primary' onclick='window.location.reload()'>← Kembali</a></div>", unsafe_allow_html=True)
 
 # ====================================================
 # 6️⃣ HALAMAN DETEKSI & KLASIFIKASI GAMBAR
