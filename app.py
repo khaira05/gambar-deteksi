@@ -207,6 +207,7 @@ elif st.session_state.page == "analysis":
         if st.button("🦩 Pilih Klasifikasi", use_container_width=True):
             st.session_state.mode = "klasifikasi"
             st.session_state.page = "upload"
+            st.rerun()
 
     # Tombol kembali
     if st.button("⬅️ Kembali ke Beranda", use_container_width=True):
