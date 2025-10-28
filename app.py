@@ -199,9 +199,8 @@ elif st.session_state.page == "analysis":
         """, unsafe_allow_html=True)
         if st.button("🦩 Jalankan Klasifikasi", use_container_width=True):
             st.success("Mode klasifikasi diaktifkan (placeholder).")
-
-    # Tombol kembali
-    st.markdown("<div class='back-btn'><a href='#' class='btn-primary' onclick='window.location.reload()'>← Kembali</a></div>", unsafe_allow_html=True)
+# Tombol kembali
+st.markdown("<div class='back-btn'><a href='#' class='btn-primary' onclick='window.location.reload()'>← Kembali</a></div>", unsafe_allow_html=True)
 
 # ====================================================
 # 🌸 TAMPILAN UPLOAD GAMBAR & HASIL ANALISIS (AI VISION STYLE)
