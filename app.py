@@ -42,6 +42,9 @@ st.set_page_config(page_title="AI Vision", page_icon="🦩", layout="centered")
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
+if "mode" not in st.session_state:
+    st.session_state.mode = None  # deteksi atau klasifikasi
+
 # ====================================================
 # 3️⃣ CUSTOM CSS UNTUK TAMPILAN (GAYA AI VISION)
 # ====================================================
@@ -149,7 +152,7 @@ if st.session_state.page == "home":
         """, unsafe_allow_html=True)
 
     # Tombol ke halaman berikut
-    if st.button("🚀 Mulai Sekarang", use_container_width=True):
+    if st.button("🚀 Lanjut ke Pilih Mode Analisis", use_container_width=True):
         st.session_state.page = "analysis"
 
     # Metrics info
@@ -163,7 +166,7 @@ if st.session_state.page == "home":
 
 
 # ====================================================
-# 5️⃣ HALAMAN PILIH ANALISIS
+# 5️⃣ HALAMAN PILIH MODE ANALISIS
 # ====================================================
 elif st.session_state.page == "analysis":
     st.markdown('<h1 class="main-title">Pilih Jenis Analisis <span class="highlight">AI Vision</span></h1>', unsafe_allow_html=True)
@@ -182,8 +185,9 @@ elif st.session_state.page == "analysis":
                 </ul>
             </div>
         """, unsafe_allow_html=True)
-        if st.button("🧠 Jalankan Deteksi Objek", use_container_width=True):
-            st.success("Mode deteksi diaktifkan (placeholder).")
+        if st.button("🧠 Pilih Deteksi Objek", use_container_width=True):
+            st.session_state.mode = "deteksi"
+            st.session_state.page = "upload"
 
     with col2:
         st.markdown("""
@@ -197,11 +201,35 @@ elif st.session_state.page == "analysis":
                 </ul>
             </div>
         """, unsafe_allow_html=True)
-        if st.button("🦩 Jalankan Klasifikasi", use_container_width=True):
-            st.success("Mode klasifikasi diaktifkan (placeholder).")
-# Tombol kembali
-st.markdown("<div class='back-btn'><a href='#' class='btn-primary' onclick='window.location.reload()'>← Kembali</a></div>", unsafe_allow_html=True)
+        if st.button("🦩 Pilih Klasifikasi", use_container_width=True):
+            st.session_state.mode = "klasifikasi"
+            st.session_state.page = "upload"
 
+    # Tombol kembali
+    if st.button("⬅️ Kembali ke Beranda", use_container_width=True):
+        st.session_state.page = "home"
+
+
+# ====================================================
+# 6️⃣ HALAMAN INTI (UPLOAD GAMBAR)
+# ====================================================
+elif st.session_state.page == "upload":
+    if st.session_state.mode == "deteksi":
+        st.markdown('<h1 class="main-title">🔍 Deteksi Objek</h1>', unsafe_allow_html=True)
+        st.markdown('<p class="subtitle">Unggah gambar untuk mendeteksi objek burung di dalamnya.</p>', unsafe_allow_html=True)
+    elif st.session_state.mode == "klasifikasi":
+        st.markdown('<h1 class="main-title">📷 Klasifikasi Gambar</h1>', unsafe_allow_html=True)
+        st.markdown('<p class="subtitle">Unggah gambar burung untuk mengidentifikasi spesiesnya.</p>', unsafe_allow_html=True)
+
+    uploaded_file = st.file_uploader("Unggah gambar di sini", type=["jpg", "jpeg", "png"])
+
+    if uploaded_file is not None:
+        st.image(uploaded_file, caption="Gambar yang diunggah", use_column_width=True)
+        st.info("🔧 Proses analisis AI sedang berjalan (placeholder)...")
+
+    if st.button("⬅️ Kembali ke Pilih Mode", use_container_width=True):
+        st.session_state.page = "analysis"
+        
 # ====================================================
 # 🌸 TAMPILAN UPLOAD GAMBAR & HASIL ANALISIS (AI VISION STYLE)
 # ====================================================
