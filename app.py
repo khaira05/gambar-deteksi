@@ -266,52 +266,52 @@ else:
     # ====================================================
     # 🟩 MODE KLASIFIKASI GAMBAR
     # ====================================================
-elif mode == "Klasifikasi Gambar":
-    uploaded_image = st.file_uploader("📤 Upload Gambar untuk Klasifikasi", type=["jpg", "jpeg", "png"])
+    elif mode == "Klasifikasi Gambar":
+        uploaded_image = st.file_uploader("📤 Upload Gambar untuk Klasifikasi", type=["jpg", "jpeg", "png"])
 
-    if uploaded_image is not None:
-        img = Image.open(uploaded_image)
+        if uploaded_image is not None:
+            img = Image.open(uploaded_image)
 
-        # --- Proses gambar & prediksi ---
-        target_size = (224, 224)
-        img = img.convert("RGB")
+            # --- Proses gambar & prediksi ---
+            target_size = (224, 224)
+            img = img.convert("RGB")
 
-        with st.spinner("🔎 Sedang menganalisis gambar..."):
-            prediction = classifier.predict(img_array)
+            with st.spinner("🔎 Sedang menganalisis gambar..."):
+                prediction = classifier.predict(img_array)
 
-        predicted_class = np.argmax(prediction, axis=1)[0]
-        class_names = [
-            "AMERICAN GOLDFINCH",
-            "BARN OWL",
-            "CARMINE BEE-EATER",
-            "DOWNY WOODPECKER",
-            "EMPEROR PENGUIN",
-            "FLAMINGO"
-        ]
-        predicted_label = class_names[predicted_class]
+            predicted_class = np.argmax(prediction, axis=1)[0]
+            class_names = [
+                "AMERICAN GOLDFINCH",
+                "BARN OWL",
+                "CARMINE BEE-EATER",
+                "DOWNY WOODPECKER",
+                "EMPEROR PENGUIN",
+                "FLAMINGO"
+            ]
+            predicted_label = class_names[predicted_class]
 
-        # --- Tampilan hasil ---
-        st.markdown(f"""
-            <div style="
-                background:white;
-                border-left: 6px solid #10B981;
-                border-radius:14px;
-                padding:22px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                margin-top:25px;
-            ">
-                <h3 style="color:#10B981; margin-bottom:8px;">🧠 Hasil Klasifikasi Gambar</h3>
-                <p style="color:#334155; font-size:15px;">
-                    Model AI Vision mengenali gambar sebagai spesies:
-                    <b style="color:#10B981;">{predicted_label}</b>
-                </p>
-                <p style="color:#475569; margin-top:6px;">
-                    Confidence Score: <b>{np.max(prediction):.2f}</b>
-                </p>
-            </div>
-        """, unsafe_allow_html=True)
+            # --- Tampilan hasil ---
+            st.markdown(f"""
+                <div style="
+                    background:white;
+                    border-left: 6px solid #10B981;
+                    border-radius:14px;
+                    padding:22px;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                    margin-top:25px;
+                ">
+                    <h3 style="color:#10B981; margin-bottom:8px;">🧠 Hasil Klasifikasi Gambar</h3>
+                    <p style="color:#334155; font-size:15px;">
+                        Model AI Vision mengenali gambar sebagai spesies:
+                        <b style="color:#10B981;">{predicted_label}</b>
+                    </p>
+                    <p style="color:#475569; margin-top:6px;">
+                        Confidence Score: <b>{np.max(prediction):.2f}</b>
+                    </p>
+                </div>
+            """, unsafe_allow_html=True)
 
-        st.image(img_resized, caption="📊 Gambar yang dianalisis", use_container_width=True)
+            st.image(img_resized, caption="📊 Gambar yang dianalisis", use_container_width=True)
 
 # ====================================================
 # 7️⃣ TOMBOL KEMBALI KE BERANDA
